@@ -46,7 +46,8 @@ export const login = async (req, resp) => {
         success: false,
       });
     }
-    const user = await User.findOne({ email });
+    var user = await User.findOne({ email });
+    console.log(JSON.stringify(user));
     if (!user) {
       return resp.status(400).json({
         message: "Incorrect email or password",
@@ -90,7 +91,7 @@ export const login = async (req, resp) => {
         sameSite: "strict",
       })
       .json({
-        message: "welcome back" + user.fullName,
+        message: "welcome back " + user.fullName,
         success: true,
       });
   } catch (error) {
@@ -98,46 +99,56 @@ export const login = async (req, resp) => {
   }
 };
 
-export const logout =async (req,resp)=>{
+export const logout = async (req, resp) => {
   try {
-    return resp.status(200).cookie('token',"",{maxAge:0}.json({
-      message:'logout success',
-      success:true
-    }))
-  } catch (error) {
-    
-  }
-}
+    return resp.status(200).cookie(
+      "token",
+      "",
+      { maxAge: 0 }.json({
+        message: "logout success",
+        success: true,
+      })
+    );
+  } catch (error) {}
+};
 
-export const updateProfile=async (req, resp)=>{
+export const updateProfile = async (req, resp) => {
   try {
-    const {fullName,email,phoneNumber,bio, skills}=req.body
-    const file=req.file
-    if (!fullName || !email || !phoneNumber || !bio || !skills) {
-      resp.status(400).json({
-        message: "something is missing",
+    const { fullName, email, phoneNumber, bio, skills } = req.body;
+    //const file = req.file;
+
+    //cloudinary.....
+    let skillsArray
+    if (skills) {
+       skillsArray= skills.split(",");
+    }
+    const userId = req.id; //middleware auth
+    let user = await User.findById(userId);
+    if (!user) {
+      return resp.status(400).json({
+        message: "User not found",
         success: false,
       });
     }
-    //cloudinary.....
-    const skillsArray=skills.split(",")
-    const userId=req.id; //middleware auth
-    let user=await User.findById(userId);
-    if(!user){
-      return resp.status(400).json({
-        message:'User not found',
-        success:false
-      })
+    if (fullName) {
+      user.fullName = fullName;
     }
-    user.fullName=fullName;
-    user.fullName=fullName;
-    user.fullName=fullName;
-    user.profile.bio=profile.bio;
-    user.profile.skills=profile.skills;
+    if (email) {
+      user.email = email;
+    }
+    if (phoneNumber) {
+      user.phoneNumber = phoneNumber;
+    }
+    if (bio) {
+      user.profile.bio = bio;
+    }
+    if (skills) {
+      user.profile.skills = skillsArray;
+    }
 
     //resume part later...
 
-    await user.save()
+    await user.save();
 
     user = {
       _id: user._id,
@@ -148,14 +159,10 @@ export const updateProfile=async (req, resp)=>{
       profile: user.profile,
     };
 
-    return resp
-    .status(200)
-    .json({
-      message: "profile updated" ,
+    return resp.status(200).json({
+      message: "profile updated",
       user,
       success: true,
     });
-  } catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};
