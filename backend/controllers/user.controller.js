@@ -112,12 +112,14 @@ export const logout =async (req,resp)=>{
 export const updateProfile=async (req, resp)=>{
   try {
     const {fullname,email,phoneNumber,bio, skills}=req.body
+    const file=req.file
     if (!fullname || !email || !phoneNumber || !bio || !skills) {
       resp.status(400).json({
         message: "something is missing",
         success: false,
       });
     }
+    //cloudinary.....
     const skillsArray=skills.split(",")
     const userId=req.id; //middleware auth
     let user=await User.findById(userId);
@@ -137,6 +139,22 @@ export const updateProfile=async (req, resp)=>{
 
     await user.save()
 
+    user = {
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      profile: user.profile,
+    };
+
+    return resp
+    .status(200)
+    .json({
+      message: "profile updated" ,
+      user,
+      success: true,
+    });
   } catch (error) {
     
   }
