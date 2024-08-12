@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { type } from "os";
 const userSchema=new mongoose.Schema({
   fullName:{
     type:String,
@@ -35,4 +34,4 @@ const userSchema=new mongoose.Schema({
       }
     }, 
 },{timestamps:true});
-export const User=mongoose.Model('User',userSchema)
+export const User = mongoose.model('User', userSchema);

@@ -1,11 +1,11 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const register = async (req, resp) => {
   try {
-    const { fullname, email, phoneNumber, password, role } = req.body;
-    if (!fullname || !email || !phoneNumber || !password || !role) {
+    const { fullName, email, phoneNumber, password, role } = req.body;
+    if (!fullName || !email || !phoneNumber || !password || !role) {
       resp.status(400).json({
         message: "something is missing",
         success: false,
@@ -20,8 +20,8 @@ export const register = async (req, resp) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await user.create({
-      fullname,
+    await User.create({
+      fullName,
       email,
       phoneNumber,
       password: hashedPassword,
@@ -75,7 +75,7 @@ export const login = async (req, resp) => {
     });
     user = {
       _id: user._id,
-      fullname: user.fullname,
+      fullName: user.fullName,
       email: user.email,
       phoneNumber: user.phoneNumber,
       role: user.role,
@@ -90,7 +90,7 @@ export const login = async (req, resp) => {
         sameSite: "strict",
       })
       .json({
-        message: "welcome back" + user.fullname,
+        message: "welcome back" + user.fullName,
         success: true,
       });
   } catch (error) {
@@ -111,9 +111,9 @@ export const logout =async (req,resp)=>{
 
 export const updateProfile=async (req, resp)=>{
   try {
-    const {fullname,email,phoneNumber,bio, skills}=req.body
+    const {fullName,email,phoneNumber,bio, skills}=req.body
     const file=req.file
-    if (!fullname || !email || !phoneNumber || !bio || !skills) {
+    if (!fullName || !email || !phoneNumber || !bio || !skills) {
       resp.status(400).json({
         message: "something is missing",
         success: false,
@@ -129,9 +129,9 @@ export const updateProfile=async (req, resp)=>{
         success:false
       })
     }
-    user.fullname=fullname;
-    user.fullname=fullname;
-    user.fullname=fullname;
+    user.fullName=fullName;
+    user.fullName=fullName;
+    user.fullName=fullName;
     user.profile.bio=profile.bio;
     user.profile.skills=profile.skills;
 
@@ -141,7 +141,7 @@ export const updateProfile=async (req, resp)=>{
 
     user = {
       _id: user._id,
-      fullname: user.fullname,
+      fullName: user.fullName,
       email: user.email,
       phoneNumber: user.phoneNumber,
       role: user.role,
