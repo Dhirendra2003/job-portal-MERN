@@ -101,15 +101,14 @@ export const login = async (req, resp) => {
 
 export const logout = async (req, resp) => {
   try {
-    return resp.status(200).cookie(
-      "token",
-      "",
-      { maxAge: 0 }.json({
+    return resp.status(200).cookie("token","",{ maxAge:0 }).json({
         message: "logout success",
         success: true,
       })
-    );
-  } catch (error) {}
+    ;
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 export const updateProfile = async (req, resp) => {
