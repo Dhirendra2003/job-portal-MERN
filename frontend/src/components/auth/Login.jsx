@@ -10,7 +10,7 @@ import { USER_API_END_POINT } from '@/utils/constants'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoading } from '../../../redux/authSlice'
+import { setLoading, setUser } from '../../../redux/authSlice'
 import { Loader2 } from 'lucide-react'
 
 
@@ -34,21 +34,29 @@ export default function Login() {
   const submitHandler = async (e) => {
     e.preventDefault();
    
-
+var resp;
     try {
       dispatch(setLoading(true))
-      const resp = await axios.post(`${USER_API_END_POINT}/login`, input, {
+       resp = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true
       })
       if (resp.data.success) {
+        dispatch(setUser(resp.data.user));
         navigate('/')
         toast.success(resp.data.message);
       }
+      else {
+        // Show a warning toast if the response indicates failure
+        toast.warning(resp.data.message || "Login failed. Please try again.");
+        console.log("else triggered")
+      }
+      
     } catch (error) {
       console.log(error)
+      toast.warning(error.response?.data?.message || "An error occurred. Please try again.");
     }
     finally{
       dispatch(setLoading(false))

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Badge } from './ui/badge'
-import { Ghost } from 'lucide-react'
+import { Button } from 'bootstrap'
+
 
 function LatestJobCard() {
   return (
@@ -15,9 +16,9 @@ function LatestJobCard() {
       <p className='text-sm text-gray-500' >Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
     </div>
     <div className='flex items-center gap-2 mt-4'>
-      <Badge variant={Ghost} className='text-blue-700 font-bold'>12 Positions</Badge>
-      <Badge variant={Ghost} className='text-purple-700 font-bold'>part-time</Badge>
-      <Badge variant={Ghost} className='text-red-400 font-bold'>3.6 lpa</Badge>
+      <Badge variant="ghost" className='text-blue-700 font-bold'>12 Positions</Badge>
+      <Badge variant="ghost" className='text-purple-700 font-bold'>part-time</Badge>
+      <Badge variant="ghost" className='text-red-400 font-bold'>3.6 lpa</Badge>
     </div>
 
     </div>

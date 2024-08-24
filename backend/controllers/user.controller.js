@@ -92,6 +92,7 @@ export const login = async (req, resp) => {
       })
       .json({
         message: "welcome back " + user.fullName,
+        user,
         success: true,
       });
   } catch (error) {
