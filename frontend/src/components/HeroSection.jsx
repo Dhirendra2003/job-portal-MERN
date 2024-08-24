@@ -3,8 +3,8 @@ import { Button } from "./ui/button";
 
 export default function HeroSection() {
   return (
-    <div className="text-center">
-      <span className='px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium my-auto'>No. 1 Job Hunt Website
+    <div className="text-center  my-10">
+      <span className='px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium '>No. 1 Job Hunt Website
       </span>
       <h1 className="text-5xl font-bold m-4 line- ">Search , Apply & <br /> Get Your <span className="text-[#6A38C2]">Dream Jobs</span></h1>
       <p className=" text-center mx-[auto] my-4 max-w-[60vw] ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit repellendus maiores placeat saepe qui perspiciatis.</p>

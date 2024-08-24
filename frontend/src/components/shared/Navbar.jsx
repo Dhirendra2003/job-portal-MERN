@@ -10,7 +10,7 @@ export default function Navbar() {
   //const user = false;
   const {user}=useSelector(store=>store.auth)
   return (
-    <div className="bg-white sticky top-0 ">
+    <div className="bg-white sticky top-0 z-50">
       <div className="flex items-center justify-between mx-auto max-w-5xl px-2 shadow-sm h-16">
         <div>
           <h1 className="text-2xl font-bold">

@@ -5,6 +5,8 @@ import Login from "./components/auth/Login"
 import Jobs from "./components/Jobs"
 import Browse from "./components/Browse"
 import Profile from "./components/Profile"
+import JobDescription from "./components/JobDescription"
+import Footer from "./components/Footer"
 
 const  appRouter=createBrowserRouter([
   {
@@ -31,6 +33,10 @@ const  appRouter=createBrowserRouter([
     path:'/profile',
     element:<Profile/>
   },
+  {
+    path:'/jobs/description/:id',
+    element:<JobDescription/>
+  },
 ])
 function App() {
   
@@ -39,6 +45,7 @@ function App() {
     <>
   
   <RouterProvider router={appRouter}/>
+  <Footer/>
     </>
   )
 }
