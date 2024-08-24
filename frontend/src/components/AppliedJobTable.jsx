@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -155,7 +154,7 @@ export default function AppliedJobTable() {
             <TableCell className="font-medium  max-w-[20%] text-center">{invoice.date}</TableCell>
             <TableCell className='text-lg font-meduim max-w-[35%] text-center'>{invoice.jobRole}</TableCell>
             <TableCell className='text-md font-semibold max-w-[25%] text-center'>{invoice.companyName}</TableCell>
-            <TableCell className=' max-w-[20%] text-center'><Button variant='outline' className={'rounded-full '+(invoice.status==="Accepted" && " bg-green-200 ")+(invoice.status==="Rejected" && " bg-red-200")} >{invoice.status}</Button></TableCell>
+            <TableCell className=' max-w-[20%] text-center'><Button variant='outline' className={'rounded-full ' + (invoice.status === "Accepted" && " bg-green-200 ") + (invoice.status === "Rejected" && " bg-red-200")} >{invoice.status}</Button></TableCell>
           </TableRow>
         ))}
       </TableBody>
