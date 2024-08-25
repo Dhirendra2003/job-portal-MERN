@@ -6,42 +6,44 @@ import { Badge } from "./ui/badge";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import AppliedJobTable from "./AppliedJobTable";
+import { useState } from "react";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 
 export default function Profile() {
   const { user } = useSelector(store => store.auth)
-  const isResume = true
-  const codingSkills = [
-    "JavaScript",
-    "Python",
-    "Java",
-    "C++",
-    "C#",
-    "Ruby",
-    "HTML",
-    "CSS",
-    "TypeScript",
-    "PHP",
-    "SQL",
-    "React",
-    "Angular",
-    "Vue.js",
-    "Node.js",
-    "Django",
-    "Flask",
-    "Spring Boot",
-    "Kotlin",
-    "Swift",
-    "Go",
-    "Rust",
-    "GraphQL",
-    "MongoDB",
-    "MySQL",
-    "PostgreSQL",
-    "Git",
-    "Docker",
-    "Kubernetes",
-    "AWS"
-  ];
+  // const isResume = true
+  // const codingSkills = [
+  //   "JavaScript",
+  //   "Python",
+  //   "Java",
+  //   "C++",
+  //   "C#",
+  //   "Ruby",
+  //   "HTML",
+  //   "CSS",
+  //   "TypeScript",
+  //   "PHP",
+  //   "SQL",
+  //   "React",
+  //   "Angular",
+  //   "Vue.js",
+  //   "Node.js",
+  //   "Django",
+  //   "Flask",
+  //   "Spring Boot",
+  //   "Kotlin",
+  //   "Swift",
+  //   "Go",
+  //   "Rust",
+  //   "GraphQL",
+  //   "MongoDB",
+  //   "MySQL",
+  //   "PostgreSQL",
+  //   "Git",
+  //   "Docker",
+  //   "Kubernetes",
+  //   "AWS"
+  // ];
   const tailwindBgColors500 = [
     "bg-slate-500",
     "bg-yellow-500",
@@ -63,6 +65,7 @@ export default function Profile() {
     "bg-pink-500",
     "bg-rose-500"
   ];
+  const [openEditor, setOpenEditor]=useState(false);
   function getRandomValueFromArray(array) {
     if (array.length === 0) return null; // Handle empty array case
     const randomIndex = Math.floor(Math.random() * array.length);
@@ -80,12 +83,12 @@ export default function Profile() {
               </AvatarImage>
             </Avatar>
 
-            <div>
-              <h1 className="font-semibold text-xl">Full Name </h1>
-              <p>Add you bio here Lorem ipsum dolor sit, amet consectetur adipisicing.</p>
+            <div className=" m-4 text-justify grid gap-2">
+              <h1 className="font-semibold text-xl capitalize">{user?.fullName} </h1>
+              <p>{user?.profile?.bio}</p>
             </div>
             <div className="">
-              <Edit />
+             <Button onClick={()=>{setOpenEditor(true)}} variant='ghost' size='icon'> <Edit /></Button>
             </div>
           </div>
         </div>
@@ -94,28 +97,31 @@ export default function Profile() {
           <h1 className="text-xl font-semibold">Contacts</h1>
           <div className="flex  gap-4 m-2 text-lg items-center"><Mail /> {user.email}</div>
           <div className="flex  gap-4 m-2 text-lg items-center"><Contact /> {user.phoneNumber}</div>
+        </div>
 
-
+        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
+          <h1 className="text-xl font-semibold">Resume</h1>
+          {
+            user?.profile?.resume ? <a className="text-blue-700 font-normal text-2xl underline " href={user?.profile?.resume} target="blank">{user?.profile?.resumeOriginalName}</a> : "N/A"
+          }
         </div>
         <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
           <h1 className="text-xl font-semibold">Skills </h1>
           {user?.profile?.skills ?
-            codingSkills.map((item, ind) => (
-              //user.profile.skills.map((item, ind) => (
+            // codingSkills.map((item, ind) => (
+              user.profile.skills.map((item, ind) => (
               <Badge key={ind} className={'m-2 text-md hover:scale-110 ' + getRandomValueFromArray(tailwindBgColors500)}>{item}</Badge>
             ))
             : <h1>N/A</h1>
           }
         </div>
-        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
-          <h1 className="text-xl font-semibold">Resume</h1>
-          {
-            isResume ? <a className="text-blue-700 font-normal text-2xl underline " href="https://www.google.com" target="blank">www.google.com</a> : "N/A"
-          }
-        </div>
+       
         <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
         <h1 className="text-xl font-semibold">Applied Jobs</h1>
         <AppliedJobTable/>
+          </div>
+          <div>
+            <UpdateProfileDialog openEditor={openEditor} setOpenEditor={setOpenEditor }></UpdateProfileDialog>
           </div>
 
 

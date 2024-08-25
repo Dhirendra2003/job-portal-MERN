@@ -70,66 +70,6 @@ const applnList = [
     jobRole: "QA Engineer",
     companyName: "Testify",
     status: "Pending"
-  },
-  {
-    date: "2024-06-15",
-    jobRole: "System Administrator",
-    companyName: "NetSecure",
-    status: "Rejected"
-  },
-  {
-    date: "2024-07-01",
-    jobRole: "Mobile Developer",
-    companyName: "AppFactory",
-    status: "Accepted"
-  },
-  {
-    date: "2024-07-12",
-    jobRole: "Data Scientist",
-    companyName: "DataMinds",
-    status: "Pending"
-  },
-  {
-    date: "2024-07-25",
-    jobRole: "Product Manager",
-    companyName: "Productify",
-    status: "Rejected"
-  },
-  {
-    date: "2024-08-05",
-    jobRole: "Cybersecurity Analyst",
-    companyName: "SecureNet",
-    status: "Accepted"
-  },
-  {
-    date: "2024-08-20",
-    jobRole: "Cloud Engineer",
-    companyName: "CloudWare",
-    status: "Pending"
-  },
-  {
-    date: "2024-09-10",
-    jobRole: "AI Specialist",
-    companyName: "AIBrain",
-    status: "Rejected"
-  },
-  {
-    date: "2024-09-22",
-    jobRole: "Machine Learning Engineer",
-    companyName: "MLTech",
-    status: "Accepted"
-  },
-  {
-    date: "2024-10-01",
-    jobRole: "Network Engineer",
-    companyName: "NetWorks",
-    status: "Pending"
-  },
-  {
-    date: "2024-10-15",
-    jobRole: "IT Support Specialist",
-    companyName: "SupportHero",
-    status: "Rejected"
   }
 ];
 
@@ -149,8 +89,8 @@ export default function AppliedJobTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {applnList.map((invoice) => (
-          <TableRow key={invoice}>
+        {applnList.map((invoice,index) => (
+          <TableRow key={index}>
             <TableCell className="font-medium  max-w-[20%] text-center">{invoice.date}</TableCell>
             <TableCell className='text-lg font-meduim max-w-[35%] text-center'>{invoice.jobRole}</TableCell>
             <TableCell className='text-md font-semibold max-w-[25%] text-center'>{invoice.companyName}</TableCell>

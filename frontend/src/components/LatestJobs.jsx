@@ -10,7 +10,7 @@ export default function LatestJobs() {
       {
         jobarray.slice(0,6).map((item,ind)=>{
           return (
-            <LatestJobCard></LatestJobCard>
+            <LatestJobCard key={ind}></LatestJobCard>
           )
         })
       }
