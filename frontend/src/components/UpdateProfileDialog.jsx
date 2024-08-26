@@ -70,7 +70,7 @@ export default function UpdateProfileDialog({ openEditor, setOpenEditor }) {
   }
   return (
     <div>
-      <Dialog open={openEditor} >
+      <Dialog open={openEditor} onOpenChange={()=>setOpenEditor(false)}>
         <DialogContent aria-describedby={undefined} onInteractOutside={() => setOpenEditor(false)} className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Update Profile</DialogTitle>

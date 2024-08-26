@@ -1,14 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User2 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_END_POINT } from "@/utils/constants";
+import { setUser } from "../../../redux/authSlice";
+import { toast } from "sonner";
 
 export default function Navbar() {
+  const dispatch=useDispatch();
+  const nav=useNavigate();
   
+  const logOut = async () => {
+    try {
+      const resp = await axios.get(`${USER_API_END_POINT}/logout`,{withCredentials:true});
+      if(resp.data.success){
+        dispatch(setUser(null))
+        nav('/')
+        toast.success(resp.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.success(error.response.data.message)
+    }
+  }
+
   //const user = false;
-  const {user}=useSelector(store=>store.auth)
+  const { user } = useSelector(store => store.auth)
   return (
     <div className="bg-white sticky top-0 z-50">
       <div className="flex items-center justify-between mx-auto max-w-5xl px-2 shadow-sm h-16">
@@ -48,20 +68,20 @@ export default function Navbar() {
                     <AvatarImage src="https://github.com/shadcn.png" />
                   </Avatar>
                   <div className="flex flex-col my-[auto]">
-                    <h3 className="font-medium text-lg">your name</h3>
-                    <h4 className="">Lorem, ipsum dolor.</h4>
+                    <h3 className="font-medium text-lg">{user.fullName}</h3>
+                    <h4 className="">{user.email}</h4>
                   </div>
                 </div>
                 <div className="flex flex-col mt-4 text-gray-600">
                   <div className="flex align-middle">
                     <User2 className="flex flex-col my-[auto]" />
                     <Button variant="link" className="">
-                     <Link to={'/profile'}>View Profile</Link>
+                      <Link to={'/profile'}>View Profile</Link>
                     </Button>
                   </div>
-                  <div className="flex align-middle">
+                  <div onClick={()=>{logOut()}} className="flex align-middle">
                     <LogOut className="flex flex-col my-[auto]" />
-                    <Button variant="link" className=" ">
+                    <Button  variant="link" className=" ">
                       Logout
                     </Button>
                   </div>
