@@ -111,6 +111,7 @@ export default function UpdateProfileDialog({ openEditor, setOpenEditor }) {
                 </Label>
                 <Input onChange={changeEventListener} value={input.skills} id='Skills' name='skills' className='col-span-3' />
               </div>
+                <p className='text-xs text-center -p-2 -m-2 relative -top-2 text-gray-500'>separate skills by coma ','</p>
 
               <div className='grid gap-4 grid-cols-4 items-center'>
                 <Label htmlFor='Resume' className='text-right'>

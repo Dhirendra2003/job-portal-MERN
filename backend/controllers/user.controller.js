@@ -13,6 +13,14 @@ export const register = async (req, resp) => {
         success: false,
       });
     }
+    const pfp = req.file? req.file:"";
+    var fileURI;
+    var  cloudResponse;
+    if(pfp){
+    fileURI = getDataURI(pfp);
+    cloudResponse = await cloudinary.uploader.upload(fileURI.content);
+    }
+
     const user = await User.findOne({ email });
     if (user) {
       return resp.status(400).json({
@@ -22,12 +30,15 @@ export const register = async (req, resp) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
+
     await User.create({
       fullName,
       email,
       phoneNumber,
       password: hashedPassword,
       role,
+      profile:{profilePhoto:(pfp? cloudResponse.secure_url:"")}
+
     });
     return resp.status(201).json({
       message: "account created successfully",
@@ -104,29 +115,28 @@ export const login = async (req, resp) => {
 
 export const logout = async (req, resp) => {
   try {
-    return resp.status(200).cookie("token","",{ maxAge:0 }).json({
-        message: "logout success",
-        success: true,
-      })
-    ;
+    return resp.status(200).cookie("token", "", { maxAge: 0 }).json({
+      message: "logout success",
+      success: true,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
 export const updateProfile = async (req, resp) => {
   try {
     const { fullName, email, phoneNumber, bio, skills } = req.body;
-    console.log( fullName, email, phoneNumber, bio, skills)
+    console.log(fullName, email, phoneNumber, bio, skills);
 
     //cloudinary.....
     const file = req.file;
-    const fileURI=getDataURI(file);
-    const cloudResponse=await cloudinary.uploader.upload(fileURI.content);
+    const fileURI = getDataURI(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileURI.content);
 
-    let skillsArray
+    let skillsArray;
     if (skills) {
-       skillsArray= skills.split(",");
+      skillsArray = skills.split(",");
     }
     const userId = req.id; //middleware auth
     let user = await User.findById(userId);
@@ -153,10 +163,9 @@ export const updateProfile = async (req, resp) => {
     }
 
     //resume part later...
-    if(cloudResponse){
-      user.profile.resume=cloudResponse.secure_url; //link from cloud storage for same file
-      user.profile.resumeOriginalName=file.originalname
-
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url; //link from cloud storage for same file
+      user.profile.resumeOriginalName = file.originalname;
     }
 
     await user.save();

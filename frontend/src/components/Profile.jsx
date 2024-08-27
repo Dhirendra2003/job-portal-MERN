@@ -78,7 +78,7 @@ export default function Profile() {
         <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
           <div className="flex items-center justify-evenly">
             <Avatar className='h-24 w-24'>
-              <AvatarImage src="https://github.com/shadcn.png">
+              <AvatarImage src={ user?.profile?.profilePhoto ?user?.profile?.profilePhoto: "https://github.com/shadcn.png"}>
 
               </AvatarImage>
             </Avatar>

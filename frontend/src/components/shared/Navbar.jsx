@@ -31,8 +31,8 @@ export default function Navbar() {
   const { user } = useSelector(store => store.auth)
   return (
     <div className="bg-white sticky top-0 z-50">
-      <div className="flex items-center justify-between mx-auto max-w-5xl px-2 shadow-sm h-16">
-        <div>
+      <div className="  flex items-center justify-between mx-auto max-w-5xl px-2 shadow-sm h-16">
+        <div onClick={()=>nav('/') } className='cursor-pointer'>
           <h1 className="text-2xl font-bold">
             Job<span className="text-[#F83002]">Portal</span>
           </h1>
@@ -58,14 +58,14 @@ export default function Navbar() {
             <Popover>
               <PopoverTrigger>
                 <Avatar className="cursor-pointer">
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={ user?.profile?.profilePhoto ?user?.profile?.profilePhoto: "https://github.com/shadcn.png"} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
               <PopoverContent className="w-80 ">
                 <div className="flex gap-4 space-y-1">
                   <Avatar className="flex flex-col my-[auto]">
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarImage src={ user?.profile?.profilePhoto ?user?.profile?.profilePhoto: "https://github.com/shadcn.png"} />
                   </Avatar>
                   <div className="flex flex-col my-[auto]">
                     <h3 className="font-medium text-lg">{user.fullName}</h3>
