@@ -39,9 +39,14 @@ export const applyJob = async (req, resp) => {
 
     job.applications.push(newApplication._id);
     await job.save();
+    const newJob=await Job.findById(jobId).populate([
+      { path: 'company' }, // Populate the 'company' field
+      { path: 'applications' } // Populate the 'applications' array
+    ])
     return resp.status(201).json({
       message: "job applied successfully",
       success: true,
+      newJob
     });
   } catch (error) {991
     console.log(error);

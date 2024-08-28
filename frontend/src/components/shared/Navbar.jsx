@@ -10,13 +10,13 @@ import { setUser } from "../../../redux/authSlice";
 import { toast } from "sonner";
 
 export default function Navbar() {
-  const dispatch=useDispatch();
-  const nav=useNavigate();
-  
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+
   const logOut = async () => {
     try {
-      const resp = await axios.get(`${USER_API_END_POINT}/logout`,{withCredentials:true});
-      if(resp.data.success){
+      const resp = await axios.get(`${USER_API_END_POINT}/logout`, { withCredentials: true });
+      if (resp.data.success) {
         dispatch(setUser(null))
         nav('/')
         toast.success(resp.data.message)
@@ -32,7 +32,7 @@ export default function Navbar() {
   return (
     <div className="bg-white sticky top-0 z-50">
       <div className="  flex items-center justify-between mx-auto max-w-5xl px-2 shadow-sm h-16">
-        <div onClick={()=>nav('/') } className='cursor-pointer'>
+        <div onClick={() => nav('/')} className='cursor-pointer'>
           <h1 className="text-2xl font-bold">
             Job<span className="text-[#F83002]">Portal</span>
           </h1>
@@ -40,10 +40,19 @@ export default function Navbar() {
 
         <div className="flex items-center gap-10">
           <ul className="flex font-medium items-center gap-5">
-            {/* <li><Link></Link></li> */}
-            <li><Link to={'/'}>Home</Link></li>
-            <li><Link to={'/jobs'}>Jobs</Link></li>
-            <li><Link to={'/browse'}>Browse</Link></li>
+            {user?.role === 'recruiter' ?
+              <>
+                <li><Link to={'/admin/jobs'}>Your Jobs</Link></li>
+                <li><Link to={'/admin/companies'}>Companies</Link></li>
+              </>
+              :
+              <>
+                <li><Link to={'/'}>Home</Link></li>
+                <li><Link to={'/jobs'}>Jobs</Link></li>
+                <li><Link to={'/browse'}>Browse</Link></li>
+              </>
+            }
+
           </ul>
           {!user ? (
             <div className="flex gap-2">
@@ -58,14 +67,14 @@ export default function Navbar() {
             <Popover>
               <PopoverTrigger>
                 <Avatar className="cursor-pointer">
-                  <AvatarImage src={ user?.profile?.profilePhoto ?user?.profile?.profilePhoto: "https://github.com/shadcn.png"} />
+                  <AvatarImage src={user?.profile?.profilePhoto ? user?.profile?.profilePhoto : "https://github.com/shadcn.png"} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
               <PopoverContent className="w-80 ">
                 <div className="flex gap-4 space-y-1">
                   <Avatar className="flex flex-col my-[auto]">
-                    <AvatarImage src={ user?.profile?.profilePhoto ?user?.profile?.profilePhoto: "https://github.com/shadcn.png"} />
+                    <AvatarImage src={user?.profile?.profilePhoto ? user?.profile?.profilePhoto : "https://github.com/shadcn.png"} />
                   </Avatar>
                   <div className="flex flex-col my-[auto]">
                     <h3 className="font-medium text-lg">{user.fullName}</h3>
@@ -73,15 +82,15 @@ export default function Navbar() {
                   </div>
                 </div>
                 <div className="flex flex-col mt-4 text-gray-600">
-                  <div className="flex align-middle">
+                  {user?.role === 'student' && <div className="flex align-middle">
                     <User2 className="flex flex-col my-[auto]" />
                     <Button variant="link" className="">
                       <Link to={'/profile'}>View Profile</Link>
                     </Button>
-                  </div>
-                  <div onClick={()=>{logOut()}} className="flex align-middle">
+                  </div>}
+                  <div onClick={() => { logOut() }} className="flex align-middle">
                     <LogOut className="flex flex-col my-[auto]" />
-                    <Button  variant="link" className=" ">
+                    <Button variant="link" className=" ">
                       Logout
                     </Button>
                   </div>

@@ -45,7 +45,10 @@ var resp;
       })
       if (resp.data.success) {
         dispatch(setUser(resp.data.user));
-        navigate('/')
+        if(input.role==='student')
+       { navigate('/')}
+      if(input.role==='recruiter')
+      { navigate('/admin/companies')}
         toast.success(resp.data.message);
       }
       else {
