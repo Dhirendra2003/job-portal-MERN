@@ -9,54 +9,65 @@ import JobDescription from "./components/JobDescription"
 import Footer from "./components/Footer"
 import Companies from "./components/Companies"
 import AdminJobs from "./components/AdminJobs"
+import CreateCompany from "./components/CreateCompany"
+import CompanyEdit from "./components/CompanyEdit"
 
-const  appRouter=createBrowserRouter([
+const appRouter = createBrowserRouter([
   {
-    path:'/',
-    element:<Home/>
+    path: '/',
+    element: <Home />
   },
   {
-    path:'/signup',
-    element:<Signup/>
+    path: '/signup',
+    element: <Signup />
   },
   {
-    path:'/login',
-    element:<Login/>
+    path: '/login',
+    element: <Login />
   },
   {
-    path:'/jobs',
-    element:<Jobs/>
+    path: '/jobs',
+    element: <Jobs />
   },
   {
-    path:'/browse',
-    element:<Browse/>
+    path: '/browse',
+    element: <Browse />
   },
   {
-    path:'/profile',
-    element:<Profile/>
+    path: '/profile',
+    element: <Profile />
   },
   {
-    path:'/jobs/description/:id',
-    element:<JobDescription/>
+    path: '/jobs/description/:id',
+    element: <JobDescription />
   },
   {
-    path:'/admin/companies',
-    element:<Companies/>
+    path: '/admin/companies',
+    element: <Companies />
   },
   {
-    path:'/admin/jobs',
-    element:<AdminJobs/>
+    path: '/admin/jobs',
+    element: <AdminJobs />
+  },
+  {
+    path: '/admin/companies/create',
+    element: <CreateCompany />
+  },
+  {
+    path: '/admin/companies/:id',
+    element: <CompanyEdit/>
   },
 ])
 function App() {
-  
+
 
   return (
-    <>
-  
-  <RouterProvider router={appRouter}/>
-  <Footer/>
-    </>
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-grow">
+        <RouterProvider router={appRouter} />
+      </main>
+      <Footer />
+    </div>
   )
 }
 

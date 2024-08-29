@@ -4,6 +4,7 @@ import { Input } from './ui/input'
 import { Building2, Search } from 'lucide-react'
 import { Button } from './ui/button'
 import CompaniesTable from './CompaniesTable'
+import { Link } from 'react-router-dom'
 
 export default function Companies() {
   return (
@@ -19,7 +20,7 @@ export default function Companies() {
           </div>
           <div className='flex  items-center gap-2'>
 
-            <Button className='flex gap-2 items-center w-50'>   <Building2 /><span> New Company </span></Button>
+            <Button className='flex gap-2 items-center w-50'>   <Building2 /><Link to={'/admin/companies/create'}><span> New Company </span></Link></Button>
           </div>
         </div>
 <CompaniesTable/>
