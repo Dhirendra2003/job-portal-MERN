@@ -16,27 +16,36 @@ export default function CompanyEdit() {
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const getCompanyInfo = async () => {
-    try {
 
-      const resp = await axios.get(`${COMPANY_END_POINT}/get/${id}`, { withCredentials: true });
-      if (resp.data.success) {
-        dispatch(setCompanyDetails(resp.data.company))
-        console.log('success')
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  var { company } = useSelector(store => store.company)
   useEffect(() => {
+    const getCompanyInfo = async () => {
+      try {
+        const resp = await axios.get(`${COMPANY_END_POINT}/get/${id}`, { withCredentials: true });
+        if (resp.data.success) {
+          dispatch(setCompanyDetails(resp.data.company))
+          // console.log('success')
+          setInput({
+            companyName: resp.data.company ? resp.data.company.name : '',
+            description: resp.data.company ? resp.data.company.description : '',
+            website: resp.data.company ? resp.data.company.website : '',
+            location: resp.data.company ? resp.data.company.location : '',
+            file: ''
+          });
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
     getCompanyInfo();
+    console.log("update called")
+   
   }, [])
-
   const [input, setInput] = useState({
-    companyName: '',
-    description: '',
-    website: '',
-    location: '',
+    companyName: company ? company.name : '',
+    description: company ? company.description : '',
+    website: company ? company.website : '',
+    location: company ? company.location : '',
     file: ''
 
   })
@@ -79,13 +88,12 @@ export default function CompanyEdit() {
     }
   }
 
-  const { company } = useSelector(store => store.company)
+
   return (
     <div className='min-h-screen'>
       <Navbar />
       <form onSubmit={submitHandler}>
         <div className='max-w-7xl m-auto'>
-          <h1>{company.name}</h1>
 
           <div className='flex min-w-[100%]  justify-between mx-auto my-10 p-10 items-center'>
             <div className='flex  items-center gap-2'>

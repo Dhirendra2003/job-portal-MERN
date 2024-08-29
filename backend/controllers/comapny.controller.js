@@ -88,8 +88,10 @@ export const updateCompany = async (req, resp) => {
       description,
       website,
       location,
-      logo: file ? cloudResponse.secure_url : "",
     };
+    if (file) {
+      updateData.logo = cloudResponse.secure_url;
+    }
     const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });
