@@ -66,12 +66,12 @@ function Job({data}) {
         <p className='text-sm text-gray-600 my-4'>{data.description}</p>
       </div>
       </div>
-      <div className='flex gap-2'>
+      <div className='flex gap-2 flex-wrap'>
       <Badge variant="ghost" className='text-blue-700 font-bold'>{data.positions} Positions</Badge>
       <Badge variant="ghost" className='text-purple-700 font-bold'>{data.jobType}</Badge>
       <Badge variant="ghost" className='text-red-400 font-bold'>{data.salary*12/100000} LPA</Badge>
       </div>
-      <div className=' flex gap-4 my-4'>
+      <div className=' flex gap-4 flex-wrap my-4'>
         <Button className='bg-purple-700 hover:bg-purple-900' onClick={()=>{nav(`/jobs/description/${data._id}`)}}>Details</Button>
         <Button variant='outline' >Save for later</Button>
       </div>

@@ -36,7 +36,7 @@ const filterdata = [
 ]
 function FilterCard() {
   return (
-    <div className="m-2 mt-6">
+    <div className="m-2 mt-6 sticky top-24 ">
       <h1 className="font-medium text-lg">Filter Jobs</h1>
       <hr className="mt-4" />
 
@@ -47,7 +47,7 @@ function FilterCard() {
             <RadioGroup key={index} defaultValue="comfortable">
               {item.array.map((item, ind) => {
                 return (
-                  <div key={ind} className="flex items-center space-x-2 text-nowrap mt-1  ">
+                  <div key={ind} className="flex items-center space-x-2 text-wrap mt-1  ">
                     <RadioGroupItem value={item} id="r1" />
                     <Label htmlFor="r1">{item}</Label>
                     <hr />
