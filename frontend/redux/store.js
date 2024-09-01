@@ -3,7 +3,6 @@ import authSlice from "./authSlice.js";
 import jobSlice from "./jobSlice.js";
 import singleJobSlice from "./singleJobSlice.js";
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,
@@ -13,9 +12,10 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { PersistGate } from "redux-persist/integration/react";
+
 import singleCompanySlice from "./singleCompanySlice.js";
 import adminJobSlice from "./adminJobSlice.js";
+import applicationsSlice from "./applicationsSlice.js";
 
 const persistConfig = {
   key: "root",
@@ -27,7 +27,8 @@ const rootReducer = combineReducers({
   job: jobSlice,
   sJob: singleJobSlice,
   company:singleCompanySlice,
-  adminJobs: adminJobSlice
+  adminJobs: adminJobSlice,
+  applications :applicationsSlice,
   
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);

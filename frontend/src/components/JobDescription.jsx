@@ -81,7 +81,7 @@ const dispatch=useDispatch();
             <div className='flex gap-2'>
               <Badge variant="ghost" className='text-blue-700 font-bold'>{job?.positions + " positions" || 'no. of positions'}</Badge>
               <Badge variant="ghost" className='text-purple-700 font-bold'>{job?.jobType || 'Job Type'}</Badge>
-              <Badge variant="ghost" className='text-red-400 font-bold'>{job?.salary * 12 / 100000} LPA</Badge>
+              <Badge variant="ghost" className='text-red-400 font-bold'>{(job?.salary * 12 / 100000).toFixed(2)} LPA</Badge>
             </div>
 
           </div>
@@ -95,12 +95,12 @@ const dispatch=useDispatch();
           <h1 className='font-bold my-1 text-pretty'>Role : <span className='pl-4 font-medium text-gray-700'>{job?.title}</span></h1>
           <h1 className='font-bold my-1 text-pretty'>Location : <span className='pl-4 font-medium text-gray-700'>{job?.location}</span></h1>
           <h1 className='font-bold my-1 text-pretty'>Experience : <span className='pl-4 font-medium text-gray-700'>{job?.experienceLevel} Years</span></h1>
-          <h1 className='font-bold my-1 text-pretty'>Salary: <span className='pl-4 font-medium text-gray-700'>{job?.salary * 12 / 100000} LPA </span></h1>
+          <h1 className='font-bold my-1 text-pretty'>Salary: <span className='pl-4 font-medium text-gray-700'>{(job?.salary * 12 / 100000).toFixed(2)} LPA </span></h1>
           <h1 className='font-bold my-1 text-pretty'>Total Applicants : <span className='pl-4 font-medium text-gray-700'>{job?.applications?.length}</span></h1>
           <h1 className='font-bold my-1 text-pretty'>Posted On: <span className='pl-4 font-medium text-gray-700'>{formatDate(job?.updatedAt)}</span></h1>
         </div>}
         <hr className='mt-8' />
-        <p className='text-justify'>
+        <p className='text-justify leading-8'>
           <span className='font-bold'>      About Us:</span><br />
           {job?.company?.description}
           <br />

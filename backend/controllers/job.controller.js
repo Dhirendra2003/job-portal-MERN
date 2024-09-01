@@ -133,3 +133,78 @@ export const getAdminJobs = async (req, resp) => {
     console.log(error);
   }
 };
+
+export const editJob = async (req, resp) => {
+  try {
+    const {
+      title,
+      description,
+      requirements,
+      salary,
+      jobType,
+      experience,
+      position,
+      companyId,
+      location,
+    } = req.body;
+    const userId = req.id;
+    if (
+      !title ||
+      !description ||
+      !requirements ||
+      !salary ||
+      !jobType ||
+      !experience ||
+      !position ||
+      !companyId ||
+      !location
+    ) {
+      console.log({
+        title,
+        description,
+        requirements,
+        salary,
+        jobType,
+        experience,
+        position,
+        companyId,
+        location,
+      });
+      return resp.status(400).json({
+        message: "something is missing ",
+        success: false,
+      });
+    }
+    const job =// await Job.create(
+      {
+      title,
+      description,
+      requirements: requirements.split(","),
+      salary: Number(salary),
+      jobType,
+      experienceLevel: experience,
+      positions:position,
+      location:location,
+      company: companyId,
+      created_by: userId,
+    };
+
+    const updatedJob=await Job.findByIdAndUpdate(req.params.id, job, {
+      new: true,
+    });
+    if (!updatedJob) {
+      return resp.status(404).json({
+        message: "job not found! create new job",
+        success: false,
+      });
+    }
+
+    return resp.status(201).json({
+      message: "job updated successfully",
+      updatedJob,
+      success: true,
+    });  
+  } catch (error) {
+    console.log(error);
+  }
+};

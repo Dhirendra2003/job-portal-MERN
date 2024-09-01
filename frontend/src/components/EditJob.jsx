@@ -2,7 +2,7 @@ import { ArrowLeft, BriefcaseBusiness, Loader2 } from 'lucide-react'
 import Navbar from './shared/Navbar'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button } from './ui/button'
 import { useEffect, useState } from 'react'
 import {
@@ -17,8 +17,14 @@ import {
 import axios from 'axios'
 import { COMPANY_END_POINT, JOB_END_POINT } from '@/utils/constants'
 import { toast } from 'sonner'
+import useGetJobDetails from '@/hooks/useGetJobDetails'
+import { useSelector } from 'react-redux'
 
-export default function PostJob() {
+export default function EditJob() {
+  const { id } = useParams();
+  useGetJobDetails(id)
+  const { job } = useSelector(store => store.sJob)
+
   const [compData, setCompData] = useState()
 
   useEffect(() => {
@@ -59,30 +65,48 @@ export default function PostJob() {
   const changeCompanyHandler = (e) => {
     setInput({ ...input, companyId: e })
   }
-  const nav=useNavigate();
+  const nav = useNavigate();
   const postJob = async (e) => {
     e.preventDefault();
     //  console.log(input)
     try {
       setLoading(true);
-      const resp=await axios.post(`${JOB_END_POINT}/post`,input,{withCredentials:true, headers:{"Content-Type":'application/json'}});
-      if(resp.data.success){
+      const resp = await axios.post(`${JOB_END_POINT}/edit/${id}`, input, { withCredentials: true, headers: { "Content-Type": 'application/json' } });
+      if (resp.data.success) {
         nav('/admin/jobs')
         toast.success(resp.data.message);
       }
-      else{
-        toast.warning(resp.data.message || "post job failed");
+      else {
+        toast.warning(resp.data.message || "edit job failed");
       }
     } catch (error) {
       toast.warning(error.response?.data?.message || "An error occurred. Please try again.");
-    }finally{
+    } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    // console.log(id+"this is from useeefect")
+    var reqString = job.requirements.map((obj) => obj).join(",");
+    console.log(reqString)
+    setInput({
+      title: job.title,
+      description: job.description,
+      location: job.location,
+      position: Number(job.positions),
+      salary: job.salary,
+      jobType: job.jobType,
+      experience: job.experienceLevel,
+      companyId: job.company._id,
+      requirements: reqString
+    })
+    console.log(job?.company?.name)
+  }, [job])
   return (
     <div className='min-h-screen mb-40'>
       <Navbar />
-      <form onSubmit={(e) => {postJob(e) }}>
+      <form onSubmit={(e) => { postJob(e) }}>
         <div className='max-w-7xl m-auto'>
 
           <div className='flex min-w-[100%]  justify-between mx-auto my-10 p-10 items-center'>
@@ -90,11 +114,11 @@ export default function PostJob() {
               <Link to={'/admin/jobs'}>
                 <Button variant='outline' className='flex gap-4 items-center w-50'>   <ArrowLeft /><span> Skip</span></Button></Link>
             </div>
-            <h1 className='mr-auto ml-10 font-semibold text-2xl'>Post Job</h1>
+            <h1 className='mr-auto ml-10 font-semibold text-2xl'>Edit job</h1>
             <div className='flex  items-center gap-2'>
 
               {loading ? <Button type='disable' className='flex gap-4 items-center w-50 cursor-not-allowed'>   <Loader2 className='mr-2 h-4 w-4 animate-spin' /><span> Updating... </span></Button> :
-                <Button type='submit' className='flex gap-4 items-center w-50'>   <BriefcaseBusiness /><span> Post Job </span></Button>}
+                <Button type='submit' className='flex gap-4 items-center w-50'>   <BriefcaseBusiness /><span> Edit Job </span></Button>}
             </div>
           </div>
 
@@ -137,12 +161,12 @@ export default function PostJob() {
 
             <div>
               <Label>Number of Positions</Label>
-              <Input value={Number(input.position)} name="position" onChange={changeEventHandler} min={1} type="number" placeholder="1/2/5..."></Input>
+              <Input value={Number(input.position)} name="position" onChange={changeEventHandler} min={1} type="number" placeholder="1/2/5"></Input>
             </div>
 
             <div className='m-auto col-span-2'>
               <Label>Select Company</Label>
-             {compData?.length>0 ?<Select required={true} onValueChange={changeCompanyHandler} name='companyId' >
+              {compData?.length > 0 ? <Select value={input.companyId} required={true} onValueChange={changeCompanyHandler} name='companyId' >
                 <SelectTrigger className="w-[580px]">
                   <SelectValue placeholder="Companies" />
                 </SelectTrigger>
@@ -155,11 +179,11 @@ export default function PostJob() {
                     })}
                   </SelectGroup>
                 </SelectContent>
-              </Select>:
-              <div className='flex gap-2 items-center my-4'>
-              <h1>create a company first</h1>
-              <Link to={'/admin/companies/create'}><Button>Create Company</Button></Link>
-              </div>
+              </Select> :
+                <div className='flex gap-2 items-center my-4'>
+                  <h1>create a company first</h1>
+                  <Link to={'/admin/companies/create'}><Button>Create Company</Button></Link>
+                </div>
               }
             </div>
           </div>

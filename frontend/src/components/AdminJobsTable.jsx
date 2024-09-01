@@ -11,7 +11,7 @@ import {
 
 import { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Building2, Edit2 } from "lucide-react";
+import { Building2, Edit2, EyeIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import useGetAllAdminJobs from "@/hooks/useGetAllAdminJobs";
@@ -25,25 +25,25 @@ export default function AdminJobsTable(props) {
 
   useGetAllAdminJobs();
   const { adminJobs } = useSelector(store => store.adminJobs);
-  const [jobsData,setJobsData]=useState();
-useEffect(()=>{
-  if (!props.filter) {
-    setJobsData(adminJobs); // If no filter text, show all data
-  } else {
-    const filtered = adminJobs.filter(job =>
-      job?.title?.toLowerCase().includes(props.filter.toLowerCase()) ||
-      job?.company?.name?.toLowerCase().includes(props.filter.toLowerCase()) ||
-      job?.location?.toLowerCase().includes(props.filter.toLowerCase())
-     
-    );
-    setJobsData(filtered);
+  const [jobsData, setJobsData] = useState();
+  useEffect(() => {
+    if (!props.filter) {
+      setJobsData(adminJobs); // If no filter text, show all data
+    } else {
+      const filtered = adminJobs.filter(job =>
+        job?.title?.toLowerCase().includes(props.filter.toLowerCase()) ||
+        job?.company?.name?.toLowerCase().includes(props.filter.toLowerCase()) ||
+        job?.location?.toLowerCase().includes(props.filter.toLowerCase())
+
+      );
+      setJobsData(filtered);
+    }
+  }, [adminJobs, props.filter]);
+  function convertDate(date) {
+    var newDate = new Date(date);
+    var dateStr = newDate.toLocaleDateString("en-GB");
+    return dateStr
   }
-}, [adminJobs, props.filter]);
-function convertDate (date){
-  var newDate=new Date(date);
-  var dateStr= newDate.toLocaleDateString("en-GB");
-  return dateStr
-}
   return (
     <>
       {adminJobs ? <Table className='my-5'>
@@ -55,7 +55,8 @@ function convertDate (date){
             <TableHead className="  text-center text-lg ">Location</TableHead>
             <TableHead className="  text-center text-lg ">Date</TableHead>
             <TableHead className="  text-center text-lg " >Applicants</TableHead>
-            <TableHead className="  text-center text-lg " ></TableHead>
+            <TableHead className="  text-center text-lg " >Edit</TableHead>
+            <TableHead className="  text-center text-lg text-wrap w-20 " >View Applications</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,7 +68,14 @@ function convertDate (date){
               <TableCell className='text-lg font-meduim text-center'>{comp.location}</TableCell>
               <TableCell className='text-md font-semibold text-center text-blue-700'>{convertDate(comp.createdAt)}</TableCell>
               <TableCell className='  text-center text-nowrap overflow-hidden '>{comp?.applications?.length}</TableCell>
-              <TableCell className='  text-center text-nowrap overflow-hidden '><Link to={`/admin/job/post`}><Button variant='ghost'><Edit2 /></Button></Link></TableCell>
+              <TableCell className='  text-center text-nowrap overflow-hidden '><Link to={`/admin/job/edit/${comp._id}`}><Button variant='ghost'><Edit2 /></Button></Link></TableCell>
+              <TableCell className='flex'>
+                <Link className='m-auto' to={`/admin/applications/${comp._id}`}>
+                  <Button className='m-auto' variant='ghost'>
+                    <EyeIcon />
+                  </Button>
+                </Link>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
