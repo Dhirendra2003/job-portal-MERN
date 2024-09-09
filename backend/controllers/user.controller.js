@@ -184,5 +184,8 @@ export const updateProfile = async (req, resp) => {
       user,
       success: true,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
+

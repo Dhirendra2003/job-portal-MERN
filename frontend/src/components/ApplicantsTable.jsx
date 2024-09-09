@@ -3,6 +3,9 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
 import { Check,  Ellipsis, X } from 'lucide-react';
+import axios from 'axios';
+import { APPLICATION_END_POINT } from '@/utils/constants';
+import { toast } from 'sonner';
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -10,6 +13,22 @@ function formatDate(dateString) {
   return date.toLocaleDateString('en-GB', options); // en-GB format gives 'dd MMM yyyy'
 }
 export default function ApplicantsTable({ data }) {
+  const sendStatus=async(id , status,applicantName)=>{
+    try {
+      const resp=await axios.post(`${APPLICATION_END_POINT}/status/${id}/update`,{"status":status},{withCredentials:true, headers:{"Content-Type":'application/json'}});
+      if(resp?.data.success){
+        toast.success(resp.data.message +" for "+applicantName)
+      }else {
+        // Show a warning toast if the response indicates failure
+        toast.warning(resp.data.message || "Login failed. Please try again.");
+        console.log("else triggered")
+      }
+      
+    } catch (error) {
+      console.log(error)
+      toast.warning(error.response?.data?.message || "An error occurred. Please try again.");
+    }
+    }
   return (
     <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 rounded-2xl p-10'>
       <h1 className='text-center text-blue-800 font-bold text-2xl mb-8'>Applications</h1>
@@ -47,8 +66,8 @@ export default function ApplicantsTable({ data }) {
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className='flex flex-col w-30 rounded-xl gap-4'>
-                        <Button variant='ghost'><div className='flex items-center gap-2 bg-green-300 p-3 rounded-lg'><Check/><p>Accept</p></div></Button>
-                        <Button variant='ghost'><div className='flex items-center gap-2 p-3 rounded-lg bg-red-300'><X/><p>Reject</p></div></Button>
+                        <Button onClick={()=>{sendStatus(appn._id,"accepted",appn.applicant?.fullName)}} variant='ghost'><div className='flex items-center gap-2 bg-green-300 p-3 rounded-lg'><Check/><p>Accept</p></div></Button>
+                        <Button onClick={()=>{sendStatus(appn._id,"rejected",appn.applicant?.fullName)}} variant='ghost'><div className='flex items-center gap-2 p-3 rounded-lg bg-red-300'><X/><p>Reject</p></div></Button>
                       </PopoverContent>
                     </Popover>
                   </TableCell>

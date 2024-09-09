@@ -15,6 +15,7 @@ function formatDate(dateString) {
 }
 
 
+
 export default function ViewApplications() {
   const { id } = useParams()
  
@@ -38,6 +39,8 @@ export default function ViewApplications() {
   }, [])
   // useEffect(()=>{  console.log(data +"this is it")},[data])
 
+ 
+  
   return (
     <div>
       <Navbar/>

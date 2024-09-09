@@ -9,6 +9,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { APPLICATION_END_POINT } from "@/utils/constants";
+import { Avatar, AvatarImage } from "./ui/avatar";
+
+function convertDate(date) {
+  var newDate = new Date(date);
+  var dateStr = newDate.toLocaleDateString("en-GB");
+  return dateStr
+}
 
 const applnList = [
   {
@@ -77,26 +87,41 @@ const applnList = [
 
 
 export default function AppliedJobTable() {
+  const [appln, setAppln] = useState();
+  useEffect(() => {
+    const findApplications = async () => {
+      try {
+        const resp = await axios.get(`${APPLICATION_END_POINT}/get`, { withCredentials: true });
+        if (resp.data.success) {
+          setAppln(resp.data.application)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    findApplications()
+  },[])
   return (
     <Table className='my-5'>
       <TableCaption>A list of your applied jobs.</TableCaption>
       <TableHeader className='my-10'>
         <TableRow >
-          <TableHead className=" max-w-[20%] text-center text-lg ">Date</TableHead>
-          <TableHead className=" max-w-[35%] text-center text-lg ">Job Role</TableHead>
-          <TableHead className=" max-w-[25%] text-center text-lg ">Company</TableHead>
-          <TableHead className=" max-w-[20%] text-center text-lg " >Status</TableHead>
+          <TableHead className="  text-center text-lg ">Date</TableHead>
+          <TableHead className="  text-center text-lg ">Company</TableHead>
+          <TableHead className="  text-center text-lg ">Job Role</TableHead>
+          <TableHead className="  text-center text-lg " >Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {applnList.map((invoice,index) => (
+        { appln? appln.map((invoice, index) => (
           <TableRow key={index}>
-            <TableCell className="font-medium  max-w-[20%] text-center">{invoice.date}</TableCell>
-            <TableCell className='text-lg font-meduim max-w-[35%] text-center'>{invoice.jobRole}</TableCell>
-            <TableCell className='text-md font-semibold max-w-[25%] text-center'>{invoice.companyName}</TableCell>
-            <TableCell className=' max-w-[20%] text-center'><Button variant='outline' className={'rounded-full ' + (invoice.status === "Accepted" && " bg-green-200 ") + (invoice.status === "Rejected" && " bg-red-200")} >{invoice.status}</Button></TableCell>
+            <TableCell className="font-medium   text-center">{convertDate(invoice.updatedAt)}</TableCell>
+            <TableCell className='text-md font-semibold flex m-auto  capitalize'>
+              <div className=" flex items-center gap-2 m-auto"><Avatar ><AvatarImage src={invoice.job?.company?.logo}></AvatarImage></Avatar><p>{invoice.job?.company?.name}</p></div></TableCell>
+            <TableCell className='text-lg font-semibold  capitalize text-wrap text-center'>{invoice?.job?.title}</TableCell>
+            <TableCell className='  text-center '><Button variant='outline' className={'rounded-full capitalize ' + (invoice.status === "accepted" && " bg-green-200 ") + (invoice.status === "rejected" && " bg-red-200")} >{invoice.status}</Button></TableCell>
           </TableRow>
-        ))}
+        )):"No Applications found !"}
       </TableBody>
       {/* <TableFooter>
         <TableRow>
