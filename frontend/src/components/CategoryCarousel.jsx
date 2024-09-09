@@ -1,6 +1,7 @@
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 const category = [
   "frontend developer",
@@ -33,7 +34,9 @@ export default function CategoryCarousel() {
           {category.map((cat, index) => {
             return (
             <CarouselItem key={index} className='md:basis-1/3 lg:basis-1/3  '>
+              <Link to={`/browse?searchstring=${cat}`}>
               <Button variant='outline' className='rounded-full'>{cat}</Button>
+              </Link>
             </CarouselItem>)
           })}
 

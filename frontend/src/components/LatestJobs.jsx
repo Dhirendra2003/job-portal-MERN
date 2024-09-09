@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import LatestJobCard from "./LatestJobCard"
 import { useSelector } from "react-redux"
 
@@ -12,7 +13,9 @@ export default function LatestJobs() {
       {
        allJobs ? allJobs.slice(0,6).map((item,ind)=>{
           return (
-            <LatestJobCard key={ind} job={item}></LatestJobCard>
+            <Link to={`/jobs/description/${item._id}`} key={ind}>
+            <LatestJobCard  job={item}></LatestJobCard>
+            </Link>
           )
         }):<span className="text-4xl">No jobs are present at current time 😔 </span>
       }
