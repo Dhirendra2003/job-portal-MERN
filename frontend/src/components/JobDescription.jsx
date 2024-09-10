@@ -66,7 +66,7 @@ const dispatch=useDispatch();
       <Navbar />
 
       <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 rounded-2xl p-10'>
-        <div className=' flex  gap-5 '>
+        <div className=' md:flex  gap-5 '>
           <Button variant='ghost' className='p-1' size='xl'>
             <Avatar >
               <AvatarImage src='https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg' >
