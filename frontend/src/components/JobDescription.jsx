@@ -66,7 +66,7 @@ const dispatch=useDispatch();
       <Navbar />
 
       <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 rounded-2xl p-10'>
-        <div className=' md:flex  gap-5 '>
+        <div className=' md:flex flex-wrap gap-5 '>
           <Button variant='ghost' className='p-1' size='xl'>
             <Avatar >
               <AvatarImage src='https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg' >
@@ -74,7 +74,7 @@ const dispatch=useDispatch();
               </AvatarImage>
             </Avatar>
           </Button>
-          <div className='mx-4'>
+          <div className='mx-4 '>
             <h1 className='text-4xl font-semibold my-4 '>{job?.title || 'Job Title'}</h1>
             <h1 className='text-xl underline my-1 capitalize'>{job?.company?.name || 'company name'}</h1>
             <h1 className='text-lg mb-2 capitalize'>{job?.location || 'Location'}</h1>
