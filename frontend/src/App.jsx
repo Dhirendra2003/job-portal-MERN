@@ -14,6 +14,8 @@ import CompanyEdit from "./components/CompanyEdit"
 import PostJob from "./components/PostJob"
 import EditJob from "./components/EditJob"
 import ViewApplications from "./components/ViewApplications"
+import SavedJobs from "./components/SavedJobs"
+import RouteProtector from "./components/RouteProtector"
 
 const appRouter = createBrowserRouter([
   {
@@ -41,43 +43,48 @@ const appRouter = createBrowserRouter([
     element: <Profile />
   },
   {
+    path: '/profile/saved',
+    element: <SavedJobs />
+  },
+  {
     path: '/jobs/description/:id',
     element: <JobDescription />
   },
   {
     path: '/admin/companies',
-    element: <Companies />
+    element: <RouteProtector><Companies /></RouteProtector>
   },
   {
     path: '/admin/jobs',
-    element: <AdminJobs />
+    element: <RouteProtector><AdminJobs /></RouteProtector>
   },
   {
     path: '/admin/companies/create',
-    element: <CreateCompany />
+    element: <RouteProtector><CreateCompany /></RouteProtector>
   },
   {
     path: '/admin/companies/:id',
-    element: <CompanyEdit/>
+    element: <RouteProtector><CompanyEdit/></RouteProtector>
   },
   {
     path: '/admin/job/post',
-    element: <PostJob/>
+    element: <RouteProtector><PostJob/></RouteProtector>
   },
   {
     path: '/admin/job/edit/:id',
-    element: <EditJob/>
+    element: <RouteProtector><EditJob/></RouteProtector>
   },
   {
     path: '/admin/applications/:id',
-    element: <ViewApplications/>
+    element: <RouteProtector><ViewApplications/></RouteProtector>
   },
+  
 ])
 function App() {
 
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen dark:bg-black">
       <main className="flex-grow">
         <RouterProvider router={appRouter} />
       </main>

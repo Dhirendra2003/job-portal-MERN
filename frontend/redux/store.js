@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "./authSlice.js";
 import jobSlice from "./jobSlice.js";
 import singleJobSlice from "./singleJobSlice.js";
+import modeSlice from './modeSlice.js'
 import {
   persistReducer,
   FLUSH,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   company:singleCompanySlice,
   adminJobs: adminJobSlice,
   applications :applicationsSlice,
+  theme :modeSlice
   
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);

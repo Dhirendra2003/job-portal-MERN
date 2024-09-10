@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
@@ -26,7 +26,7 @@ export default function Login() {
   })
   const navigate = useNavigate();
   const dispatch =useDispatch()
-  const {loading}=useSelector(store=>store.auth)
+  const {loading,user}=useSelector(store=>store.auth)
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value })
   }
@@ -65,7 +65,12 @@ var resp;
       dispatch(setLoading(false))
     }
   }
-
+  const nav = useNavigate();
+  useEffect(() => {
+    if (user) {
+      nav('/')
+    }
+  },[])
   return (
     <div>
       <Navbar />

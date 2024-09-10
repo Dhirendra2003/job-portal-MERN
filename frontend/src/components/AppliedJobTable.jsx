@@ -20,71 +20,6 @@ function convertDate(date) {
   return dateStr
 }
 
-const applnList = [
-  {
-    date: "2024-01-15",
-    jobRole: "Software Engineer",
-    companyName: "TechCorp",
-    status: "Pending"
-  },
-  {
-    date: "2024-02-01",
-    jobRole: "Data Analyst",
-    companyName: "DataSolutions",
-    status: "Rejected"
-  },
-  {
-    date: "2024-02-10",
-    jobRole: "Backend Developer",
-    companyName: "CodeWorks",
-    status: "Accepted"
-  },
-  {
-    date: "2024-03-05",
-    jobRole: "Frontend Developer",
-    companyName: "WebCraft",
-    status: "Pending"
-  },
-  {
-    date: "2024-03-20",
-    jobRole: "Full Stack Developer",
-    companyName: "InnovateX",
-    status: "Rejected"
-  },
-  {
-    date: "2024-04-10",
-    jobRole: "UX Designer",
-    companyName: "DesignHub",
-    status: "Accepted"
-  },
-  {
-    date: "2024-04-25",
-    jobRole: "DevOps Engineer",
-    companyName: "CloudOps",
-    status: "Pending"
-  },
-  {
-    date: "2024-05-05",
-    jobRole: "Project Manager",
-    companyName: "BuildIt",
-    status: "Rejected"
-  },
-  {
-    date: "2024-05-18",
-    jobRole: "Business Analyst",
-    companyName: "BizInsights",
-    status: "Accepted"
-  },
-  {
-    date: "2024-06-02",
-    jobRole: "QA Engineer",
-    companyName: "Testify",
-    status: "Pending"
-  }
-];
-
-
-
 
 export default function AppliedJobTable() {
   const [appln, setAppln] = useState();
@@ -102,14 +37,14 @@ export default function AppliedJobTable() {
     findApplications()
   },[])
   return (
-    <Table className='my-5'>
+    <Table className='my-5 dark:bg-neutral-900'>
       <TableCaption>A list of your applied jobs.</TableCaption>
       <TableHeader className='my-10'>
         <TableRow >
-          <TableHead className="  text-center text-lg ">Date</TableHead>
-          <TableHead className="  text-center text-lg ">Company</TableHead>
-          <TableHead className="  text-center text-lg ">Job Role</TableHead>
-          <TableHead className="  text-center text-lg " >Status</TableHead>
+          <TableHead className="  text-center text-lg dark:text-white">Date</TableHead>
+          <TableHead className="  text-center text-lg dark:text-white">Company</TableHead>
+          <TableHead className="  text-center text-lg dark:text-white">Job Role</TableHead>
+          <TableHead className="  text-center text-lg dark:text-white" >Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -119,7 +54,7 @@ export default function AppliedJobTable() {
             <TableCell className='text-md font-semibold flex m-auto  capitalize'>
               <div className=" flex items-center gap-2 m-auto"><Avatar ><AvatarImage src={invoice.job?.company?.logo}></AvatarImage></Avatar><p>{invoice.job?.company?.name}</p></div></TableCell>
             <TableCell className='text-lg font-semibold  capitalize text-wrap text-center'>{invoice?.job?.title}</TableCell>
-            <TableCell className='  text-center '><Button variant='outline' className={'rounded-full capitalize ' + (invoice.status === "accepted" && " bg-green-200 ") + (invoice.status === "rejected" && " bg-red-200")} >{invoice.status}</Button></TableCell>
+            <TableCell className='  text-center '><Button variant='outline' className={'rounded-full capitalize dark:bg-neutral-700 ' + (invoice.status === "accepted" && " bg-green-200 dark:bg-green-700 ") + (invoice.status === "rejected" && " bg-red-200 dark:bg-red-700 ")} >{invoice.status}</Button></TableCell>
           </TableRow>
         )):"No Applications found !"}
       </TableBody>

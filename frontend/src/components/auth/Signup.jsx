@@ -1,4 +1,4 @@
-import  { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
@@ -22,9 +22,9 @@ export default function Signup() {
     file: ''
 
   })
-  const navigate=useNavigate();
-  const dispatch =useDispatch()
-  const {loading}=useSelector(store=>store.auth)
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const { loading, user } = useSelector(store => store.auth)
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value })
   }
@@ -52,7 +52,7 @@ export default function Signup() {
         },
         withCredentials: true
       })
-      if(resp.data.success){
+      if (resp.data.success) {
         navigate('/login')
         toast.success(resp.data.message);
       }
@@ -60,10 +60,16 @@ export default function Signup() {
       console.log(error)
       toast.error(error.response.data.message)
     }
-    finally{
+    finally {
       dispatch(setLoading(false))
     }
   }
+  const nav = useNavigate();
+  useEffect(() => {
+    if (user) {
+      nav('/')
+    }
+  },[])
   return (
     <div>
       <Navbar />
@@ -105,8 +111,8 @@ export default function Signup() {
             </div>
           </div>
 
-         
-          {loading? <Button className='my-4 w-full'><Loader2 className='mr-2 h-4 w-4 animate-spin'/>Please wait</Button>: <Button type='submit' className='my-4 w-full'> Sign in</Button>}
+
+          {loading ? <Button className='my-4 w-full'><Loader2 className='mr-2 h-4 w-4 animate-spin' />Please wait</Button> : <Button type='submit' className='my-4 w-full'> Sign in</Button>}
           <span >Already have an account? <Link to='/login' className='text-blue-500 font-medium'>Login</Link></span>
         </form>
       </div>

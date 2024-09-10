@@ -11,39 +11,7 @@ import UpdateProfileDialog from "./UpdateProfileDialog";
 
 export default function Profile() {
   const { user } = useSelector(store => store.auth)
-  // const isResume = true
-  // const codingSkills = [
-  //   "JavaScript",
-  //   "Python",
-  //   "Java",
-  //   "C++",
-  //   "C#",
-  //   "Ruby",
-  //   "HTML",
-  //   "CSS",
-  //   "TypeScript",
-  //   "PHP",
-  //   "SQL",
-  //   "React",
-  //   "Angular",
-  //   "Vue.js",
-  //   "Node.js",
-  //   "Django",
-  //   "Flask",
-  //   "Spring Boot",
-  //   "Kotlin",
-  //   "Swift",
-  //   "Go",
-  //   "Rust",
-  //   "GraphQL",
-  //   "MongoDB",
-  //   "MySQL",
-  //   "PostgreSQL",
-  //   "Git",
-  //   "Docker",
-  //   "Kubernetes",
-  //   "AWS"
-  // ];
+
   const tailwindBgColors500 = [
     "bg-slate-500",
     "bg-yellow-500",
@@ -75,7 +43,7 @@ export default function Profile() {
     <div>
       <Navbar />
       {user ? <>
-        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
+        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8 dark:bg-neutral-900">
           <div className="flex items-center justify-evenly">
             <Avatar className='h-24 w-24'>
               <AvatarImage src={ user?.profile?.profilePhoto ?user?.profile?.profilePhoto: "https://github.com/shadcn.png"}>
@@ -83,7 +51,7 @@ export default function Profile() {
               </AvatarImage>
             </Avatar>
 
-            <div className=" m-4 text-justify grid gap-2">
+            <div className=" m-4 text-justify grid gap-2 ">
               <h1 className="font-semibold text-xl capitalize">{user?.fullName} </h1>
               <p>{user?.profile?.bio}</p>
             </div>
@@ -93,19 +61,19 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
+        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8 dark:bg-neutral-900">
           <h1 className="text-xl font-semibold">Contacts</h1>
           <div className="flex  gap-4 m-2 text-lg items-center"><Mail /> {user.email}</div>
           <div className="flex  gap-4 m-2 text-lg items-center"><Contact /> {user.phoneNumber}</div>
         </div>
 
-        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
-          <h1 className="text-xl font-semibold">Resume</h1>
+        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8 dark:bg-neutral-900">
+          <h1 className="text-xl font-semibold ">Resume</h1>
           {
-            user?.profile?.resume ? <a className="text-blue-700 font-normal text-2xl underline " href={user?.profile?.resume} target="blank">{user?.profile?.resumeOriginalName}</a> : "N/A"
+            user?.profile?.resume ? <a className="text-blue-700 font-normal text-2xl underline dark:text-blue-400 " href={user?.profile?.resume} target="blank">{user?.profile?.resumeOriginalName}</a> : "N/A"
           }
         </div>
-        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
+        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8 dark:bg-neutral-900">
           <h1 className="text-xl font-semibold">Skills </h1>
           {user?.profile?.skills ?
             // codingSkills.map((item, ind) => (
@@ -116,7 +84,7 @@ export default function Profile() {
           }
         </div>
        
-        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
+        <div className="max-w-7xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8 dark:bg-neutral-900">
         <h1 className="text-xl font-semibold">Applied Jobs</h1>
         <AppliedJobTable/>
           </div>

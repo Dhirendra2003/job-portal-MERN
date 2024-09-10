@@ -6,6 +6,7 @@ import useGetAllJobs from "@/hooks/useGetAllJobs"
 import { useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 
 
 export default function Home() {
@@ -15,6 +16,9 @@ export default function Home() {
   useEffect(()=>{
     if(user?.role==="recruiter"){
 nav('/admin/companies');
+    }
+    if(!user){
+      toast.warning('Login First to use This Application')
     }
   })
   return (

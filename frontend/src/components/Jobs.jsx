@@ -4,13 +4,15 @@ import Navbar from "./shared/Navbar";
 import { useSelector } from "react-redux";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 function extractNumbers(str) {
   return str.match(/\d+/g).map(Number);  // Extract all digit sequences and convert to numbers
 }
 export default function Jobs() {
   useGetAllJobs();  // Fetch all jobs
-
+const {user}=useSelector(store => store.auth)
   const { allJobs } = useSelector(store => store.job);
   const { filterJobs } = useSelector(store => store.job);
 
@@ -20,6 +22,9 @@ export default function Jobs() {
   useEffect(() => {
     if (allJobs.length > 0) {
       setJobArray(allJobs);
+    }
+    if(!user){
+      toast.warning('Login First to use This Application')
     }
   }, [allJobs]);
 
@@ -85,9 +90,9 @@ export default function Jobs() {
             <div className="flex-1 min-h-[88vh] overflow-y-auto pb-5">
               <div className="grid grid-cols-3 gap-4">
                 {jobArray.map((job, index) => (
-                  <div key={index}>
+                  <motion.div initial={{opacity:0,x:100}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-100}} transition={{duration:.5}} key={index}>
                     <Job key={index} data={job} />
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>

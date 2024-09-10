@@ -2,6 +2,7 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const category = [
   "frontend developer",
@@ -34,9 +35,11 @@ export default function CategoryCarousel() {
           {category.map((cat, index) => {
             return (
             <CarouselItem key={index} className='md:basis-1/3 lg:basis-1/3  '>
+              <motion.div initial={{opacity:0,x:100}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-100}} transition={{duration:.5}}>
               <Link to={`/browse?searchstring=${cat}`}>
-              <Button variant='outline' className='rounded-full'>{cat}</Button>
+              <Button variant='outline' className='rounded-full dark:bg-neutral-700'>{cat}</Button>
               </Link>
+              </motion.div>
             </CarouselItem>)
           })}
 

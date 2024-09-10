@@ -37,12 +37,12 @@ export default function ApplicantsTable({ data }) {
         <TableCaption>List of applicants</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="  text-center text-lg ">Name</TableHead>
-            <TableHead className="  text-center text-lg ">Email</TableHead>
-            <TableHead className="  text-center text-lg ">Phone Number</TableHead>
-            <TableHead className="  text-center text-lg ">Date</TableHead>
-            <TableHead className="  text-center text-lg ">Resume</TableHead>
-            <TableHead className="  text-center text-lg ">Actions</TableHead>
+            <TableHead className="  text-center text-lg dark:text-white">Name</TableHead>
+            <TableHead className="  text-center text-lg dark:text-white">Email</TableHead>
+            <TableHead className="  text-center text-lg dark:text-white">Phone Number</TableHead>
+            <TableHead className="  text-center text-lg dark:text-white">Date</TableHead>
+            <TableHead className="  text-center text-lg dark:text-white">Resume</TableHead>
+            <TableHead className="  text-center text-lg dark:text-white">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -66,8 +66,8 @@ export default function ApplicantsTable({ data }) {
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className='flex flex-col w-30 rounded-xl gap-4'>
-                        <Button onClick={()=>{sendStatus(appn._id,"accepted",appn.applicant?.fullName)}} variant='ghost'><div className='flex items-center gap-2 bg-green-300 p-3 rounded-lg'><Check/><p>Accept</p></div></Button>
-                        <Button onClick={()=>{sendStatus(appn._id,"rejected",appn.applicant?.fullName)}} variant='ghost'><div className='flex items-center gap-2 p-3 rounded-lg bg-red-300'><X/><p>Reject</p></div></Button>
+                        <Button onClick={()=>{sendStatus(appn._id,"accepted",appn.applicant?.fullName)}} variant='ghost'><div className='flex items-center gap-2 bg-green-300 p-3 rounded-lg dark:bg-green-700'><Check/><p>Accept</p></div></Button>
+                        <Button onClick={()=>{sendStatus(appn._id,"rejected",appn.applicant?.fullName)}} variant='ghost'><div className='flex items-center gap-2 p-3 rounded-lg bg-red-300 dark:bg-red-700'><X/><p>Reject</p></div></Button>
                       </PopoverContent>
                     </Popover>
                   </TableCell>

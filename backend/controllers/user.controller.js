@@ -13,12 +13,12 @@ export const register = async (req, resp) => {
         success: false,
       });
     }
-    const pfp = req.file? req.file:"";
+    const pfp = req.file ? req.file : "";
     var fileURI;
-    var  cloudResponse;
-    if(pfp){
-    fileURI = getDataURI(pfp);
-    cloudResponse = await cloudinary.uploader.upload(fileURI.content);
+    var cloudResponse;
+    if (pfp) {
+      fileURI = getDataURI(pfp);
+      cloudResponse = await cloudinary.uploader.upload(fileURI.content);
     }
 
     const user = await User.findOne({ email });
@@ -30,15 +30,13 @@ export const register = async (req, resp) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-
     await User.create({
       fullName,
       email,
       phoneNumber,
       password: hashedPassword,
       role,
-      profile:{profilePhoto:(pfp? cloudResponse.secure_url:"")}
-
+      profile: { profilePhoto: pfp ? cloudResponse.secure_url : "" },
     });
     return resp.status(201).json({
       message: "account created successfully",
@@ -94,6 +92,7 @@ export const login = async (req, resp) => {
       phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
+      saved:user.saved
     };
 
     return resp
@@ -163,7 +162,7 @@ export const updateProfile = async (req, resp) => {
     }
 
     //resume part later...
-    if (cloudResponse) {
+    if (cloudResponse && file) {
       user.profile.resume = cloudResponse.secure_url; //link from cloud storage for same file
       user.profile.resumeOriginalName = file.originalname;
     }
@@ -177,6 +176,7 @@ export const updateProfile = async (req, resp) => {
       phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
+      saved:user.saved
     };
 
     return resp.status(200).json({
@@ -186,6 +186,89 @@ export const updateProfile = async (req, resp) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const saveJobs = async (req, resp) => {
+  try {
+    const { job } = req.body;
+    console.log(job +"this is a saved job");
+
+    //cloudinary.....
+   
+    const userId = req.id; //middleware auth
+    let user = await User.findById(userId);
+    if (!user) {
+      return resp.status(400).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    if (job) {
+      user.saved.push(job);
+    }
+    
+
+    //resume part later...
+    
+    await user.save();
+
+    user = {
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      profile: user.profile,
+      saved:user.saved
+    };
+
+    return resp.status(200).json({
+      message: "Job saved",
+      user,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getSavedJobs = async (req, resp) => {
+  try {
+    const userId = req.id; // Assuming middleware auth adds user ID to the request
+    let user = await User.findById(userId).populate({
+      path: 'saved',
+      populate: {
+        path: 'company', // This will populate the 'company' field inside each saved job
+        model: 'Company' // Assuming your Company model is named 'Company'
+      }
+    })
+
+    if (!user) {
+      return resp.status(400).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    if (user.saved && user.saved.length > 0) {
+      return resp.status(200).json({
+        success: true,
+        saved: user.saved, // Populated jobs from Job collection
+      });
+    } else {
+      return resp.status(200).json({
+        success: true,
+        saved: [], // Return empty array if no saved jobs
+        message: "No saved jobs found"
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return resp.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 

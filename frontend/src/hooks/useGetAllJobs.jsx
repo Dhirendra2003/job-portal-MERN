@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { setAllJobs } from '../../redux/jobSlice';
+import { toast } from 'sonner';
 
 export default function useGetAllJobs() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function useGetAllJobs() {
         }
       } catch (error) {
         console.log(error)
+        toast.warning(error.response.data.message +" please login again")
       }
     }
     fetchAllJobs();

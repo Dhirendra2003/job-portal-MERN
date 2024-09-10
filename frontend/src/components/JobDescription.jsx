@@ -79,25 +79,25 @@ const dispatch=useDispatch();
             <h1 className='text-xl underline my-1 capitalize'>{job?.company?.name || 'company name'}</h1>
             <h1 className='text-lg mb-2 capitalize'>{job?.location || 'Location'}</h1>
             <div className='flex gap-2'>
-              <Badge variant="ghost" className='text-blue-700 font-bold'>{job?.positions + " positions" || 'no. of positions'}</Badge>
-              <Badge variant="ghost" className='text-purple-700 font-bold'>{job?.jobType || 'Job Type'}</Badge>
-              <Badge variant="ghost" className='text-red-400 font-bold'>{(job?.salary * 12 / 100000).toFixed(2)} LPA</Badge>
+              <Badge variant="ghost" className='text-blue-700 font-bold dark:bg-neutral-950 dark:text-blue-400 dark:border-2 dark:border-neutral-700'>{job?.positions + " positions" || 'no. of positions'}</Badge>
+              <Badge variant="ghost" className='text-purple-700 font-bold dark:bg-neutral-950 dark:text-purple-400 dark:border-2 dark:border-neutral-700'>{job?.jobType || 'Job Type'}</Badge>
+              <Badge variant="ghost" className='text-red-400 font-bold dark:bg-neutral-950 dark:text-red-400 dark:border-2 dark:border-neutral-700'>{(job?.salary * 12 / 100000).toFixed(2)} LPA</Badge>
             </div>
 
           </div>
           <div className='flex  items-center ml-auto'>
-            {user ? (!isApplied ? <Button onClick={() => { applyJobHandler() }} className='bg-purple-600 hover:bg-purple-800'>Apply Now</Button> : <Button variant='outline' disabled={true} className='cursor-not-allowed'>Already applied</Button>) : <Button><Link to="/login">Login</Link></Button>}
+            {user ? (!isApplied ? <Button onClick={() => { applyJobHandler() }} className='bg-purple-600 hover:bg-purple-800 dark:text-white'>Apply Now</Button> : <Button variant='outline' disabled={true} className='cursor-not-allowed'>Already applied</Button>) : <Button><Link to="/login">Login</Link></Button>}
           </div>
         </div>
         <hr className='mt-8' />
         {job && <div >
           <h1>Job details:</h1>
-          <h1 className='font-bold my-1 text-pretty'>Role : <span className='pl-4 font-medium text-gray-700'>{job?.title}</span></h1>
-          <h1 className='font-bold my-1 text-pretty'>Location : <span className='pl-4 font-medium text-gray-700'>{job?.location}</span></h1>
-          <h1 className='font-bold my-1 text-pretty'>Experience : <span className='pl-4 font-medium text-gray-700'>{job?.experienceLevel} Years</span></h1>
-          <h1 className='font-bold my-1 text-pretty'>Salary: <span className='pl-4 font-medium text-gray-700'>{(job?.salary * 12 / 100000).toFixed(2)} LPA </span></h1>
-          <h1 className='font-bold my-1 text-pretty'>Total Applicants : <span className='pl-4 font-medium text-gray-700'>{job?.applications?.length}</span></h1>
-          <h1 className='font-bold my-1 text-pretty'>Posted On: <span className='pl-4 font-medium text-gray-700'>{formatDate(job?.updatedAt)}</span></h1>
+          <h1 className='font-bold my-1 text-pretty'>Role : <span className='pl-4 font-medium text-gray-700 dark:text-white/80'>{job?.title}</span></h1>
+          <h1 className='font-bold my-1 text-pretty'>Location : <span className='pl-4 font-medium text-gray-700 dark:text-white/80'>{job?.location}</span></h1>
+          <h1 className='font-bold my-1 text-pretty'>Experience : <span className='pl-4 font-medium text-gray-700 dark:text-white/80'>{job?.experienceLevel} Years</span></h1>
+          <h1 className='font-bold my-1 text-pretty'>Salary: <span className='pl-4 font-medium text-gray-700 dark:text-white/80'>{(job?.salary * 12 / 100000).toFixed(2)} LPA </span></h1>
+          <h1 className='font-bold my-1 text-pretty'>Total Applicants : <span className='pl-4 font-medium text-gray-700 dark:text-white/80'>{job?.applications?.length}</span></h1>
+          <h1 className='font-bold my-1 text-pretty'>Posted On: <span className='pl-4 font-medium text-gray-700 dark:text-white/80'>{formatDate(job?.updatedAt)}</span></h1>
         </div>}
         <hr className='mt-8' />
         <p className='text-justify leading-8'>

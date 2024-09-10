@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { type } from "os";
 const userSchema=new mongoose.Schema({
   fullName:{
     type:String,
@@ -33,5 +34,10 @@ const userSchema=new mongoose.Schema({
         default:""
       }
     }, 
+    saved:[
+      {type:mongoose.Schema.Types.ObjectId,ref:'Job'}
+    ]
+
+    
 },{timestamps:true});
 export const User = mongoose.model('User', userSchema);
