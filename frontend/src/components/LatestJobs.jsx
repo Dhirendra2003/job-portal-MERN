@@ -9,8 +9,8 @@ export default function LatestJobs() {
   const { allJobs} = useSelector(store => store.job)
   return (
     <div className="mx-auto my-20 max-w-5xl">
-      <h1 className="text-4xl font-bold"><span className="text-[#6A38C2]">Latest & Top </span>Job Openings </h1>
-      <div className="grid grid-cols-3 gap-4 my-5 mx-auto ">
+     <h1 className="text-4xl font-bold md:text-left xs:text-center"><span className="text-[#6A38C2]">Latest & Top </span>Job Openings </h1>
+     <div className="grid md:grid-cols-3 xs:mx-10 gap-4 my-5 md:mx-auto ">
       {
        allJobs ? allJobs.slice(0,6).map((item,ind)=>{
           return (

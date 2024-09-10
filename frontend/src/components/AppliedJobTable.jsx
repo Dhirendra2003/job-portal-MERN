@@ -56,7 +56,7 @@ export default function AppliedJobTable() {
             <TableCell className='text-lg font-semibold  capitalize text-wrap text-center'>{invoice?.job?.title}</TableCell>
             <TableCell className='  text-center '><Button variant='outline' className={'rounded-full capitalize dark:bg-neutral-700 ' + (invoice.status === "accepted" && " bg-green-200 dark:bg-green-700 ") + (invoice.status === "rejected" && " bg-red-200 dark:bg-red-700 ")} >{invoice.status}</Button></TableCell>
           </TableRow>
-        )):"No Applications found !"}
+        )):<TableRow key={1}><TableCell>{"No Applications found"}</TableCell></TableRow>}
       </TableBody>
       {/* <TableFooter>
         <TableRow>

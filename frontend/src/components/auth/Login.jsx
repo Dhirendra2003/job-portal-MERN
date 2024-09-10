@@ -74,7 +74,7 @@ var resp;
   return (
     <div>
       <Navbar />
-      <div className='flex items-center justify-center max-w-7xl mx-[auto]'>
+      <div className='flex items-center justify-center max-w-7xl mx-[auto] md:scale-100 md:my-0 xs:scale-125 xs:my-20'>
         <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 p-4 my-10'>
           <h1 className='font-bold text-xl mb-5'>Login </h1>
 

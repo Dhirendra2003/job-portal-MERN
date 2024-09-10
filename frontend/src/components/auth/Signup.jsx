@@ -92,7 +92,7 @@ export default function Signup() {
             <Label>Password</Label>
             <Input value={input.password} name="password" onChange={changeEventHandler} type="password" placeholder="8 chars, alphanumeric & symbols"></Input>
           </div>
-          <div className='flex  items-center gap-5'>
+          <div className='md:flex  items-center gap-5'>
             <RadioGroup defaultValue="comfortable" className='flex justify-center items-center my-3 space-x-2'>
               <div className="flex items-center space-x-2">
                 <Input type='radio' name='role' value='student' className='cursor-pointer' id='r1' checked={input.role === 'student'} onChange={changeEventHandler}
@@ -105,7 +105,7 @@ export default function Signup() {
               </div>
             </RadioGroup>
 
-            <div className='flex justify-center items-center gap-2 ml-[auto]'>
+            <div className='md:flex justify-center items-center gap-2 ml-[auto]'>
               <Label>Profile</Label>
               <Input accept='image/*' type="file" onChange={changeFileHandler} className="cursor-pointer"></Input>
             </div>

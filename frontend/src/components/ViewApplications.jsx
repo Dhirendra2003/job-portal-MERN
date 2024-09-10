@@ -45,7 +45,7 @@ export default function ViewApplications() {
     <div>
       <Navbar/>
       <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 rounded-2xl p-10'>
-      <div className=' flex  gap-5 '>
+      <div className=' md:flex  gap-5 '>
           <Button variant='ghost' className='p-1' size='xl'>
             <Avatar >
               <AvatarImage src='https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg' >
@@ -64,7 +64,7 @@ export default function ViewApplications() {
             </div>
 
           </div>
-          <div className='flex  items-center ml-auto'>
+            <div className='flex  items-center ml-auto md:m-auto xs:m-8'>
           {data && <div className='text-justify' >
           <h1 className='font-bold text-xl'>Job details:</h1>
           <h1 className='font-bold my-1 text-pretty'>Role : <span className='pl-4 font-medium text-gray-700 dark:text-white'>{data?.title}</span></h1>

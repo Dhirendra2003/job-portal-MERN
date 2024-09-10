@@ -29,12 +29,12 @@ const category = [
 
 export default function CategoryCarousel() {
   return (
-    <div>
-      <Carousel className='w-full max-w-xl mx-auto my-20'>
+    <div className='xs:scale-[80%] md:scale-100'>
+      <Carousel className='md:w-full max-w-xl xs:max-w-md xs:w-96 mx-auto my-20'>
         <CarouselContent >
           {category.map((cat, index) => {
             return (
-            <CarouselItem key={index} className='md:basis-1/3 lg:basis-1/3  '>
+            <CarouselItem key={index} className='sm:basis-1/2 md:basis-1/2 xs:basis-1/2  '>
               <motion.div initial={{opacity:0,x:100}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-100}} transition={{duration:.5}}>
               <Link to={`/browse?searchstring=${cat}`}>
               <Button variant='outline' className='rounded-full dark:bg-neutral-700'>{cat}</Button>

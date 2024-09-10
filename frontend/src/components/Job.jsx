@@ -81,7 +81,7 @@ function Job({ data }) {
 
 
   return (
-    <div className='p-5 pb-2 rounded-lg shadow-lg bg-white border-2 border-gray-100 dark:bg-neutral-900 dark:border-gray-600'>
+    <div className='p-5 pb-2 rounded-lg shadow-lg bg-white border-2 border-gray-100 dark:bg-neutral-900 dark:border-gray-600 xs:w-96 m-auto'>
       <div className='flex items-center justify-between'>
         <p>{timeAgo(data.createdAt)}</p>
         <Button variant='outline' className='rounded-full ' size='icon'>

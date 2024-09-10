@@ -79,16 +79,16 @@ const {user}=useSelector(store => store.auth)
     <div>
       <Navbar />
       <div className="max-w-7xl mx-auto mt-5">
-        <div className="flex gap-5">
-          <div className="w-[20%] sticky top-0">
+        <div className="md:flex xs:grid  gap-5">
+          <div className="md:w-[20%] md:sticky md:top-0">
             <FilterCard />
           </div>
 
           {jobArray.length <= 0 ? (
             <span>Job not found</span>
           ) : (
-            <div className="flex-1 min-h-[88vh] overflow-y-auto pb-5">
-              <div className="grid grid-cols-3 gap-4">
+            <div className="flex md:min-h-[88vh] overflow-y-auto pb-5 xs:m-auto">
+              <div className="grid md:grid-cols-3 gap-4 sm:m-auto ">
                 {jobArray.map((job, index) => (
                   <motion.div initial={{opacity:0,x:100}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-100}} transition={{duration:.5}} key={index}>
                     <Job key={index} data={job} />

@@ -38,8 +38,8 @@ export default function Browse() {
     <div >
       <Navbar />
       <div className='mx-auto max-w-7xl items-center my-10'>
-        {searchstring && <h1 className='font-bold text-xl m-4'>Search Results ({allJobs?.length}) for {searchstring}</h1>}
-        <div className='grid grid-cols-3 max-w-7xl gap-4'>
+        {searchstring && <h1 className='font-bold text-xl m-4'>Search Results ({jobList?.length}) for {searchstring}</h1>}
+        <div className='grid md:grid-cols-3 xs:m-auto max-w-7xl gap-4'>
           {jobList.length > 0 ?
             jobList.map((item, index) => {
               return (

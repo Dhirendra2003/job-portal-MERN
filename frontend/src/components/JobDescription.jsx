@@ -85,8 +85,8 @@ const dispatch=useDispatch();
             </div>
 
           </div>
-          <div className='flex  items-center ml-auto'>
-            {user ? (!isApplied ? <Button onClick={() => { applyJobHandler() }} className='bg-purple-600 hover:bg-purple-800 dark:text-white'>Apply Now</Button> : <Button variant='outline' disabled={true} className='cursor-not-allowed'>Already applied</Button>) : <Button><Link to="/login">Login</Link></Button>}
+          <div className='flex  items-center md:ml-auto xs:my-10'>
+            {user ? (!isApplied ? <Button onClick={() => { applyJobHandler() }} className='bg-purple-600 hover:bg-purple-800 dark:text-white '>Apply Now</Button> : <Button variant='outline' disabled={true} className='cursor-not-allowed'>Already applied</Button>) : <Button><Link to="/login">Login</Link></Button>}
           </div>
         </div>
         <hr className='mt-8' />

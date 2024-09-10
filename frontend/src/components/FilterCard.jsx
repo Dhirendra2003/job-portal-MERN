@@ -68,7 +68,7 @@ function FilterCard() {
   };
 
   return (
-    <div className="m-2 mt-6 sticky top-24">
+    <div className="m-2 mt-6 sticky top-24 xs:grid xs:grid-rows-2">
       <h1 className="font-medium text-lg">Filter Jobs</h1>
       <hr className="mt-4" />
       <Button className="m-4 bg-purple-800 dark:text-white" onClick={handleClearFilter}>

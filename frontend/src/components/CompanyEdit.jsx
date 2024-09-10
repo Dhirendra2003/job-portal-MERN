@@ -95,7 +95,7 @@ export default function CompanyEdit() {
       <form onSubmit={submitHandler}>
         <div className='max-w-7xl m-auto'>
 
-          <div className='flex min-w-[100%]  justify-between mx-auto my-10 p-10 items-center'>
+        <div className='flex xs:flex-col md:flex-row xs:gap-4 min-w-[100%]  justify-between mx-auto my-10 p-10 items-center'>
             <div className='flex  items-center gap-2'>
               <Link to={'/admin/companies'}>
                 <Button variant='outline' className='flex gap-4 items-center w-50'>   <ArrowLeft /><span> Skip</span></Button></Link>
@@ -108,7 +108,7 @@ export default function CompanyEdit() {
             </div>
           </div>
 
-          <div className='grid grid-cols-2 max-w-xl m-auto gap-8 '>
+          <div className='grid md:grid-cols-2  md:max-w-xl xs:max-w-96 m-auto gap-8 '>
             <div>
               <Label>Company Name</Label>
               <Input value={input.companyName} name="companyName" onChange={changeEventHandler} type="text" placeholder="Org pvt.ltd. ..."></Input>
