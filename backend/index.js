@@ -22,7 +22,7 @@ const corsOption={
 app.use(cors(corsOption))
 
 app.get('/home',(req,resp)=>{
-  resp.status(200).json('this is home')
+  resp.status(200).json('this is updated home')
 })
 var port=process.env.PORT 
 app.use('/api/v1/user',userRoute)
