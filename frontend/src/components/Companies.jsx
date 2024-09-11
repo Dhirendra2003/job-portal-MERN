@@ -13,9 +13,7 @@ export default function Companies() {
       <Navbar />
 
       <div className=' grid max-w-6xl m-auto'>
-        {/* this is responsive */}
         <div className=' flex md:flex-row xs:flex-col xs:items-center xs:gap-4 xs:max-w-[60vw] md:min-w-[100%]  justify-between mx-auto my-10'>
-        <div className='flex  items-center gap-2'>
           <div className='flex  items-center gap-2'>
             <Search />
             <Input onChange={(e)=>{setFilter(e.target.value);}} className=' md:w-50 ' placeholder='Search ...'>
