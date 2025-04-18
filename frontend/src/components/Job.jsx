@@ -48,7 +48,7 @@ function Job({ data }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.saved?.length > 0) {
+    if (user?.saved?.length > 0) {
       // Ensure the comparison is between string values
       // const isJobSaved = user.saved.some((savedJob) => savedJob._id === data._id.toString());
       for (let i = 0; i < user.saved.length; i++) {

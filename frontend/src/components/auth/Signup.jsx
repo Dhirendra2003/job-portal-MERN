@@ -112,7 +112,7 @@ export default function Signup() {
           </div>
 
 
-          {loading ? <Button className='my-4 w-full'><Loader2 className='mr-2 h-4 w-4 animate-spin' />Please wait</Button> : <Button type='submit' className='my-4 w-full'> Sign in</Button>}
+          {loading ? <Button className='my-4 w-full'><Loader2 className='mr-2 h-4 w-4 animate-spin' />Please wait</Button> : <Button type='submit' className='my-4 w-full'> Sign Up</Button>}
           <span >Already have an account? <Link to='/login' className='text-blue-500 font-medium'>Login</Link></span>
         </form>
       </div>

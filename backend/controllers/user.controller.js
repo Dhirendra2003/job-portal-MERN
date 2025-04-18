@@ -92,15 +92,15 @@ export const login = async (req, resp) => {
       phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
-      saved:user.saved
+      saved: user.saved,
     };
 
     return resp
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: true,  // Only send cookie over HTTPS
-        sameSite: 'None',  // Allows cross-origin requests
+        secure: true, // Only send cookie over HTTPS
+        sameSite: "None", // Allows cross-origin requests
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpsOnly: true,
       })
@@ -130,10 +130,30 @@ export const updateProfile = async (req, resp) => {
     const { fullName, email, phoneNumber, bio, skills } = req.body;
     console.log(fullName, email, phoneNumber, bio, skills);
 
-    //cloudinary.....
-    const file = req.file;
-    const fileURI = getDataURI(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileURI.content);
+    // //cloudinary.....
+    // const file = req.file;
+    // const fileURI = getDataURI(file);
+    // const cloudResponse = await cloudinary.uploader.upload(fileURI.content);
+
+    //cloudinary uploads
+    const files = req.files;
+    let resumeCloudResponse, profilePhotoCloudResponse;
+
+    // Upload resume if provided
+    if (files.file && files.file[0]) {
+      const resumeFileURI = getDataURI(files.file[0]);
+      resumeCloudResponse = await cloudinary.uploader.upload(
+        resumeFileURI.content
+      );
+    }
+
+    // Upload profile photo if provided
+    if (files.pfp && files.pfp[0]) {
+      const pfpFileURI = getDataURI(files.pfp[0]);
+      profilePhotoCloudResponse = await cloudinary.uploader.upload(
+        pfpFileURI.content
+      );
+    }
 
     let skillsArray;
     if (skills) {
@@ -163,10 +183,20 @@ export const updateProfile = async (req, resp) => {
       user.profile.skills = skillsArray;
     }
 
-    //resume part later...
-    if (cloudResponse && file) {
-      user.profile.resume = cloudResponse.secure_url; //link from cloud storage for same file
-      user.profile.resumeOriginalName = file.originalname;
+    // //resume part later...
+    // if (cloudResponse && file) {
+    //   user.profile.resume = cloudResponse.secure_url; //link from cloud storage for same file
+    //   user.profile.resumeOriginalName = file.originalname;
+    // }
+    // Update resume if uploaded
+    if (resumeCloudResponse && files.file) {
+      user.profile.resume = resumeCloudResponse.secure_url;
+      user.profile.resumeOriginalName = files.file[0].originalname;
+    }
+
+    // Update profile photo if uploaded
+    if (profilePhotoCloudResponse && files.pfp) {
+      user.profile.profilePhoto = profilePhotoCloudResponse.secure_url;
     }
 
     await user.save();
@@ -178,7 +208,7 @@ export const updateProfile = async (req, resp) => {
       phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
-      saved:user.saved
+      saved: user.saved,
     };
 
     return resp.status(200).json({
@@ -188,16 +218,21 @@ export const updateProfile = async (req, resp) => {
     });
   } catch (error) {
     console.log(error);
+    return resp.status(500).json({
+      message: "Error updating profile",
+      success: false,
+      error: error.message,
+    });
   }
 };
 
 export const saveJobs = async (req, resp) => {
   try {
     const { job } = req.body;
-    console.log(job +"this is a saved job");
+    console.log(job + "this is a saved job");
 
     //cloudinary.....
-   
+
     const userId = req.id; //middleware auth
     let user = await User.findById(userId);
     if (!user) {
@@ -209,10 +244,9 @@ export const saveJobs = async (req, resp) => {
     if (job) {
       user.saved.push(job);
     }
-    
 
     //resume part later...
-    
+
     await user.save();
 
     user = {
@@ -222,7 +256,7 @@ export const saveJobs = async (req, resp) => {
       phoneNumber: user.phoneNumber,
       role: user.role,
       profile: user.profile,
-      saved:user.saved
+      saved: user.saved,
     };
 
     return resp.status(200).json({
@@ -239,12 +273,12 @@ export const getSavedJobs = async (req, resp) => {
   try {
     const userId = req.id; // Assuming middleware auth adds user ID to the request
     let user = await User.findById(userId).populate({
-      path: 'saved',
+      path: "saved",
       populate: {
-        path: 'company', // This will populate the 'company' field inside each saved job
-        model: 'Company' // Assuming your Company model is named 'Company'
-      }
-    })
+        path: "company", // This will populate the 'company' field inside each saved job
+        model: "Company", // Assuming your Company model is named 'Company'
+      },
+    });
 
     if (!user) {
       return resp.status(400).json({
@@ -262,7 +296,7 @@ export const getSavedJobs = async (req, resp) => {
       return resp.status(200).json({
         success: true,
         saved: [], // Return empty array if no saved jobs
-        message: "No saved jobs found"
+        message: "No saved jobs found",
       });
     }
   } catch (error) {
@@ -273,4 +307,3 @@ export const getSavedJobs = async (req, resp) => {
     });
   }
 };
-

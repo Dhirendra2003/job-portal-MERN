@@ -4,17 +4,17 @@ import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Loader2 } from 'lucide-react'
 import { Button } from './ui/button'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { USER_API_END_POINT } from '@/utils/constants'
-import {  setUser } from '../../redux/authSlice'
+import { setUser } from '../../redux/authSlice'
 import { toast } from 'sonner'
 
 // eslint-disable-next-line react/prop-types
 export default function UpdateProfileDialog({ openEditor, setOpenEditor }) {
   const [loading, setLoading] = useState(false)
   const { user } = useSelector(store => store.auth)
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     fullName: user.fullName,
     bio: user?.profile?.bio,
@@ -22,11 +22,12 @@ export default function UpdateProfileDialog({ openEditor, setOpenEditor }) {
     phoneNumber: user?.phoneNumber,
     skills: user?.profile?.skills?.map(skill => skill),
     file: user?.profile?.resume,
+    pfp: user?.profile?.profilePhoto,
   })
   const changeEventListener = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value })
   }
-  const submitHandler = async(e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log(input)
     const formData = new FormData();
@@ -35,8 +36,13 @@ export default function UpdateProfileDialog({ openEditor, setOpenEditor }) {
     formData.append("phoneNumber", input.phoneNumber)
     formData.append("bio", input.bio)
     formData.append("skills", input.skills)
+
     if (input.file) {
       formData.append("file", input.file)
+    }
+
+    if (input.pfp) {
+      formData.append("pfp", input.pfp)
     }
     try {
       setLoading(true)
@@ -59,24 +65,39 @@ export default function UpdateProfileDialog({ openEditor, setOpenEditor }) {
       console.log(error)
       toast.warning(error.response?.data?.message || "An error occurred. Please try again.");
     }
-    finally{
+    finally {
       setLoading(false)
     }
   }
-  const fileChangeHandler = (e) => {
-    var file = e.target.files?.[0];
-    setInput({ ...input, file: file })
 
+  const fileChangeHandler = (e) => {
+    const file = e.target.files?.[0];
+    setInput({ ...input, [e.target.name]: file })
   }
   return (
     <div>
-      <Dialog open={openEditor} onOpenChange={()=>setOpenEditor(false)}>
+      <Dialog open={openEditor} onOpenChange={() => setOpenEditor(false)}>
         <DialogContent aria-describedby={undefined} onInteractOutside={() => setOpenEditor(false)} className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Update Profile</DialogTitle>
           </DialogHeader>
           <form onSubmit={submitHandler}>
             <div className='grid gap-4 grid-rows-4 py-4'>
+
+            <div className='grid gap-4 grid-cols-4 items-center'>
+                <Label htmlFor='pfp' className='text-right'>
+                  Profile Photo:
+                </Label>
+                <Input 
+                  accept='image/*' 
+                  type="file" 
+                  id='pfp' 
+                  name='pfp'
+                  onChange={fileChangeHandler} 
+                  className="cursor-pointer col-span-3"
+                />
+              </div>
+
               <div className='grid gap-4 grid-cols-4 items-center'>
                 <Label htmlFor='name' className='text-right'>
                   Name :
@@ -111,13 +132,19 @@ export default function UpdateProfileDialog({ openEditor, setOpenEditor }) {
                 </Label>
                 <Input onChange={changeEventListener} value={input.skills} id='Skills' name='skills' className='col-span-3' />
               </div>
-                <p className='text-xs text-center -p-2 -m-2 relative -top-2 text-gray-500'>separate skills by coma ','</p>
+              <p className='text-xs text-center -p-2 -m-2 relative -top-2 text-gray-500'>separate skills by coma ','</p>
 
               <div className='grid gap-4 grid-cols-4 items-center'>
                 <Label htmlFor='Resume' className='text-right'>
-                  Resume :
+                  Resume:
                 </Label>
-                <Input onChange={fileChangeHandler} id='Resume' name='file' type="file" className='col-span-3' />
+                <Input 
+                  type="file" 
+                  id='Resume' 
+                  name='file' 
+                  onChange={fileChangeHandler} 
+                  className='col-span-3'
+                />
               </div>
 
 
