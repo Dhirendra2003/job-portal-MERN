@@ -15,6 +15,7 @@ const initializeSocket = (io) => {
   //   } catch (err) {
   //     next(new Error('Authentication error'));
   //   }
+
   // });
 
   io.on('connection', (socket) => {
@@ -31,7 +32,7 @@ const initializeSocket = (io) => {
       console.log('User disconnected:', socket.id);
     });
 
-    // ... other event listeners (joinRoom, leaveRoom, etc.) ...
+    //Join room 
     socket.on('joinRoom', (roomName) => {
       socket.join(roomName);
       console.log(`${socket.id} joined room: ${roomName}`);
