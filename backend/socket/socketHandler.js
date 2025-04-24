@@ -3,6 +3,7 @@ import { saveMessage } from '../controllers/message.controller.js'
 
 const initializeSocket = (io) => {
 
+  // Middleware for authentication 
   // io.use((socket, next) => {
   //   const token = socket.handshake.query.token;
   //   if (!token) return next(new Error('Authentication error'));
