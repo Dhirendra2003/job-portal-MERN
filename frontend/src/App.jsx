@@ -16,6 +16,7 @@ import EditJob from "./components/EditJob"
 import ViewApplications from "./components/ViewApplications"
 import SavedJobs from "./components/SavedJobs"
 import RouteProtector from "./components/RouteProtector"
+import Chatbot from "./components/ChatBox"
 
 const appRouter = createBrowserRouter([
   {
@@ -88,6 +89,7 @@ function App() {
       <main className="flex-grow">
         <RouterProvider router={appRouter} />
       </main>
+      <Chatbot/>
       <Footer />
     </div>
   )
