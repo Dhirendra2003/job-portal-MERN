@@ -28,8 +28,11 @@ export const createChat = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    const roomName = `${applicantId}-${jobId}-${applicantId}`;
+
     // Create new message document
     const newChat = await Message.create({
+      roomName,
       jobId,
       companyId,
       recruiterId,
@@ -47,43 +50,53 @@ export const createChat = async (req, res) => {
 //For Websocket
 export const saveMessage = async (data) => {
   try {
-    // Basic validation (ensure required fields are present in data)
-    if (
-      !data ||
-      !data.sender ||
-      !data.receiver ||
-      !data.message ||
-      !data.roomName
-    ) {
-      console.error("Error saving message: Invalid data received", data);
-      // Return an error object instead of using res
+    const { roomName, sender, message } = data;
+
+    // Validate required fields
+    if (!roomName || !sender || !message) {
       return {
         status: false,
-        message: "Invalid message data provided.",
+        message: "Missing required fields",
       };
     }
 
-    const { roomName, sender, receiver, message } = data;
-    console.log("Saving message:", data);
-    const newMessage = new Message({
-      roomName: roomName,
-      sender: sender,
-      receiver: receiver,
-      message: message, // Assuming 'message' field in data holds the text
-    });
-    await newMessage.save();
-    // Return the success status and the saved message document
+    //update existing message document with new message
+    const updatedMessage = await Message.findOneAndUpdate(
+      { roomName },
+      {
+        $push: {
+          chats: {
+            sender,
+            message,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedMessage) {
+      return {
+        status: false,
+        message: "Error saving message",
+      };
+    }
+    
+    // Return success object
     return {
       status: true,
-      message: "Message saved successfully",
-      data: newMessage, // Send back the saved document
+      message: "Message saved successfully", 
+      data: {
+        sender, 
+        message 
+      }
     };
+
   } catch (error) {
     console.error("Error saving message:", error);
     // Return an error object
     return {
       status: false,
-      message: "Internal server error while saving message.",
+      message: "Internal server error "+ error.message
     };
   }
 };

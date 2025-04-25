@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const MessageSchema = new mongoose.Schema({
-    // roomName: {
-    //     type: String,
-    //     required: true
-    // },
+    roomName: {
+        type: String,
+        required: true
+    },
     //add job id and company id
     jobId: {
         type: mongoose.Schema.Types.ObjectId,
