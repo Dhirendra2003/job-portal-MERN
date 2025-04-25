@@ -3,15 +3,15 @@ import assistant from "../assets/FA.png"
 import moment from "moment";
 import { useEffect, useState, useRef } from "react";
 
-const ChattingPage = () => {
-  const [chats, setChats] = useState([
-    { message: "How can we help you today?", fromBot: true, timestamp: 1713945600000 },
-    { message: "I need help with my application.", fromBot: false, timestamp: 1713945660000 },
-    { message: "Sure! Can you tell me what issue you're facing?", fromBot: true, timestamp: 1713945720000 },
-    { message: "It's not letting me submit my resume.", fromBot: false, timestamp: 1713945780000 },
-    { message: "Let me check that for you. One moment please.", fromBot: true, timestamp: 1713945840000 },
-    { message: "Thanks!", fromBot: false, timestamp: 1713945900000 }
-  ]);
+const ChattingPage = ({currentChat}) => {
+  // const [chats, setChats] = useState([
+  //   { message: "How can we help you today?", fromBot: true, timestamp: 1713945600000 },
+  //   { message: "I need help with my application.", fromBot: false, timestamp: 1713945660000 },
+  //   { message: "Sure! Can you tell me what issue you're facing?", fromBot: true, timestamp: 1713945720000 },
+  //   { message: "It's not letting me submit my resume.", fromBot: false, timestamp: 1713945780000 },
+  //   { message: "Let me check that for you. One moment please.", fromBot: true, timestamp: 1713945840000 },
+  //   { message: "Thanks!", fromBot: false, timestamp: 1713945900000 }
+  // ]);
   const latestMessage = useRef(null);
   const [loading, setLoading] = useState(false)
 
@@ -28,7 +28,7 @@ const ChattingPage = () => {
       {/* Chat Messages */}
       <div className="p-4 flex max-h-[90%] flex-col overflow-y-scroll pb-48 gap-1">
         <>
-          {chats.length > 0 ? chats.map((item, index) => (
+          {currentChat?.chats?.length > 0 ? currentChat?.chats?.map((item, index) => (
             <div key={index}>
               <div className="flex items-center gap-2">
                 {item.fromBot && <img src={assistant} className="w-6 h-6" alt="" />}
@@ -36,13 +36,13 @@ const ChattingPage = () => {
                 <p
 
                   className={`${item.fromBot ? "text-left bg-purple-200" : "text-right  bg-gray-100  ml-auto pr-2"} py-1 px-3 rounded-lg my-1 max-w-[70%] break-words`}
-                  ref={index === chats.length - 1 ? latestMessage : null}
+                  ref={index === currentChat?.chats?.length - 1 ? latestMessage : null}
                 >
                   {item.message}
                 </p>
 
               </div>
-              <p className={`text-xs pl-10 pr-4 ${item.fromBot ? "text-left" : "text-right"}`}>{getTime(item.timestamp)}</p>
+              <p className={`text-xs pl-10 pr-4 ${item.fromBot ? "text-left" : "text-right"}`}>{getTime(item.createdAt)}</p>
             </div>
           )) :
             <p className="text-center text-neutral-400 m-auto italic text-2xl font-semibold">
@@ -54,7 +54,7 @@ const ChattingPage = () => {
       </div>
 
       {/* Chat Options */}
-      {chats.length > 0 && <div className="p-4 border-t bg-gray-100 absolute bottom-0 w-[100%] transition-all ease-in-out duration-200">
+      {currentChat?.chats?.length > 0 && <div className="p-4 border-t bg-gray-100 absolute bottom-0 w-[100%] transition-all ease-in-out duration-200">
 
         {
           loading &&

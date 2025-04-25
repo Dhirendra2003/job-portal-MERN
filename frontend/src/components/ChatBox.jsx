@@ -17,6 +17,7 @@ export default function Chatbot() {
 const {chatWindow,newChat}=useSelector((store) => store.auth)
 const dispatcher=useDispatch();
 const [chatList,setChatList]=useState(null);
+const [currentChat ,setCurrentChat]=useState(null);
 
 const createChat=(recruiterId,applicantId,companyId, jobId)=>{
 
@@ -69,8 +70,8 @@ useEffect(()=>{
                 </button>
                 </div>
               }
-              {isChatOpen ? <ChattingPage /> :
-                <ChattingList chatList={chatList} isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen}/>}
+              {isChatOpen ? <ChattingPage currentChat={currentChat}/> :
+                <ChattingList setCurrentChat={setCurrentChat} chatList={chatList} isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen}/>}
             </div>
           )}
         </>,
