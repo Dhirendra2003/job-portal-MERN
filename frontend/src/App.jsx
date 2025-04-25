@@ -17,6 +17,7 @@ import ViewApplications from "./components/ViewApplications"
 import SavedJobs from "./components/SavedJobs"
 import RouteProtector from "./components/RouteProtector"
 import Chatbot from "./components/ChatBox"
+import { useSelector } from "react-redux"
 
 const appRouter = createBrowserRouter([
   {
@@ -82,6 +83,8 @@ const appRouter = createBrowserRouter([
   
 ])
 function App() {
+  const {user}=useSelector((store) => store.auth);
+
 
 
   return (
@@ -89,7 +92,7 @@ function App() {
       <main className="flex-grow">
         <RouterProvider router={appRouter} />
       </main>
-      <Chatbot/>
+      {user && <Chatbot/>}
       <Footer />
     </div>
   )

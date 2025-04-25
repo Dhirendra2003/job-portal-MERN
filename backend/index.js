@@ -12,6 +12,7 @@ import applicationRoute from "./routes/application.route.js"
 import http from 'http'; // Import http module
 import { Server } from 'socket.io'; // Import Server from socket.io
 import initializeSocket from "./socket/socketHandler.js"; // Import the socket handler
+import chatRouter from "./routes/messages.route.js";
 
 dotenv.config({})
 
@@ -34,7 +35,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 const corsOption={
   // origin:'https://job-portal-mern-omega.vercel.app',
-  origin:'*',
+  origin:'http://localhost:5173',
   credentials:true,
   methods:['GET','POST','PUT','DELETE']
 }
@@ -48,6 +49,7 @@ app.use('/api/v1/user',userRoute)
 app.use('/api/v1/company',companyRoute)
 app.use('/api/v1/job',jobRoute)
 app.use('/api/v1/application',applicationRoute)
+app.use('/api/v1/message',chatRouter)
 
 // Initialize Socket.IO connection handling by passing the 'io' instance
 initializeSocket(io);

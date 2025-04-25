@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const MessageSchema = new mongoose.Schema({
-    roomName: {
-        type: String,
-        required: true
-    },
+    // roomName: {
+    //     type: String,
+    //     required: true
+    // },
     //add job id and company id
     jobId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -21,10 +21,15 @@ const MessageSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    chats : {
+    applicantId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    chats : [{
         sender: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            type: String,
+            enum: ["applicant", "recruiter"],
             required: true
         },
         message: {
@@ -35,7 +40,7 @@ const MessageSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         },
-    }
+    }]
 }, { timestamps: true });
 
 export const Message = mongoose.model('Message', MessageSchema);

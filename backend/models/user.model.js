@@ -33,11 +33,6 @@ const userSchema = new mongoose.Schema({
       default: ""
     }
   },
-  //add chat list
-  chatList: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Message'
-  }],
   saved: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Job' }
   ]

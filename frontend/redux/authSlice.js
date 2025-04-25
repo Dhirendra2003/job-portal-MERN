@@ -4,7 +4,9 @@ const authSlice=createSlice({
   name:'auth',
   initialState:{
     loading:false ,
-    user:null
+    chatWindow:false,
+    user:null,
+    newChat:null,
   },
   reducers:{
     //actions
@@ -13,8 +15,14 @@ const authSlice=createSlice({
     },
     setUser:(state,action)=>{
       state.user=action.payload
+    },
+    setChatWindow:(state,action)=>{
+      state.chatWindow=action.payload
+    },
+    setNewChat:(state,action)=>{
+      state.newChat=action.payload
     }
   }
 })
-export const  {setLoading,setUser}=authSlice.actions
+export const  {setLoading,setUser,setChatWindow,setNewChat}=authSlice.actions
 export default authSlice.reducer
