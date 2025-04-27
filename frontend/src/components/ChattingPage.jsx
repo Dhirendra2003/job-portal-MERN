@@ -5,6 +5,8 @@ import { useEffect, useState, useRef } from "react";
 import axios from 'axios';
 import { CHATS_END_POINT } from '@/utils/constants';
 import { useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
+import Cookies from 'js-cookie';
 
 const ChattingPage = ({ currentChat, setCurrentChat }) => {
   // const [chats, setChats] = useState([
@@ -18,7 +20,14 @@ const ChattingPage = ({ currentChat, setCurrentChat }) => {
   const latestMessage = useRef(null);
   const textInput = useRef(null);
   const [loading, setLoading] = useState(false)
-  const { newChat,user } = useSelector((store) => store.auth)
+  const { newChat, user } = useSelector((store) => store.auth)
+
+  const token = Cookies.get('token');
+
+  const socket = io('http://localhost:3000', {
+    query: { token },
+    transports: ['websocket'], // optional but recommended
+  });
 
   function getTime(timestring) {
     const hmTime = new Date(timestring).toLocaleTimeString();
