@@ -26,6 +26,7 @@ export const createChat = async (req, res) => {
   try {
     //check if job chat already exists:
     const { jobId, companyId, recruiterId, applicantId, chats } = req.body;
+
     const oldChat = await Message.findOne({
       jobId: jobId,
       applicantId: applicantId,
@@ -33,7 +34,13 @@ export const createChat = async (req, res) => {
     console.log(oldChat);
 
     // Validate required fields
-    if (!jobId || !companyId || !recruiterId || !applicantId || !chats) {
+    if (
+      !jobId ||
+      //  !companyId ||
+      // !recruiterId ||
+      !applicantId ||
+      !chats
+    ) {
       return res.status(400).json({ message: "Missing required fields" });
     }
     const roomName = `${jobId}-${applicantId}`;
@@ -50,15 +57,14 @@ export const createChat = async (req, res) => {
         applicantId,
         chats,
       });
-    } 
-    if(oldChat){
+    }
+    if (oldChat) {
       oldChat.chats = chats;
       const returned = await oldChat.save();
       console.log(oldChat);
       console.log(returned);
       newChat = returned;
     }
-    
 
     res.status(201).json(newChat);
   } catch (error) {
@@ -100,23 +106,22 @@ export const saveMessage = async (data) => {
         message: "Error saving message",
       };
     }
-    
+
     // Return success object
     return {
       status: true,
-      message: "Message saved successfully", 
+      message: "Message saved successfully",
       data: {
-        sender, 
-        message 
-      }
+        sender,
+        message,
+      },
     };
-
   } catch (error) {
     console.error("Error saving message:", error);
     // Return an error object
     return {
       status: false,
-      message: "Internal server error "+ error.message
+      message: "Internal server error " + error.message,
     };
   }
 };

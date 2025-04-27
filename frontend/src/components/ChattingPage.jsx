@@ -63,13 +63,20 @@ const ChattingPage = ({ currentChat, setCurrentChat }) => {
       chats: [...(currentChat?.chats || []), newMessage],
     };
 
+    console.log(currentChat?.jobId?._id)
+    console.log(currentChat)
+
+    //new variables
+    const jobIDcheck= newChat?.jobId? newChat.jobId :currentChat?.jobId?._id;
+    // const jobIDcheck= newChat?.jobId? newChat.jobId :currentChat?.jobId?._id;
+    console.log(jobIDcheck)
     //creating a chat in db if not present
     const response = await axios.post(`${CHATS_END_POINT}/create-chat`,
       {
-        "jobId": newChat.jobId,
-        "companyId": newChat.companyId,
-        "recruiterId": newChat.recruiterId,
-        "applicantId": newChat.applicantId,
+        "jobId":  `${jobIDcheck}` ,
+        "companyId": newChat?.companyId || "",
+        "recruiterId": newChat?.recruiterId || "",
+        "applicantId": newChat?.applicantId || user?._id,
         "chats": updatedChat.chats, // <-- updated array
       },
       {withCredentials:true}
