@@ -1,4 +1,3 @@
-import { User } from "../models/user.model.js";
 import { Message } from "../models/message.model.js";
 
 //For REST API
@@ -77,6 +76,7 @@ export const createChat = async (req, res) => {
 export const saveMessage = async (data) => {
   try {
     const { roomName, sender, message } = data;
+    console.log("Saving message:", data);
 
     // Validate required fields
     if (!roomName || !sender || !message) {
@@ -122,6 +122,34 @@ export const saveMessage = async (data) => {
     return {
       status: false,
       message: "Internal server error " + error.message,
+    };
+  }
+};
+
+// Function to get chats by room name
+export const getChatsByRoomName = async (roomName) => {
+  try {
+    const messageDoc = await Message.findOne({ roomName });
+
+    if (!messageDoc) {
+      return {
+        status: false,
+        message: "No chats found for this room.",
+        data: [],
+      };
+    }
+
+    return {
+      status: true,
+      message: "Chats fetched successfully.",
+      data: messageDoc.chats,
+    };
+  } catch (error) {
+    console.error("Error fetching chats by room name:", error);
+    return {
+      status: false,
+      message: "Internal server error: " + error.message,
+      data: [],
     };
   }
 };

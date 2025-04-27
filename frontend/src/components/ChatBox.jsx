@@ -9,6 +9,8 @@ import ChattingPage from "./ChattingPage";
 import ChattingList from "./ChattingList";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { io } from 'socket.io-client';
+import Cookies from 'js-cookie';
 
 export default function Chatbot() {
 
@@ -18,6 +20,7 @@ const {chatWindow,newChat}=useSelector((store) => store.auth)
 const dispatcher=useDispatch();
 const [chatList,setChatList]=useState(null);
 const [currentChat ,setCurrentChat]=useState(null);
+const [socket, setSocket] = useState(null);
 
 const createChat=(recruiterId,applicantId,companyId, jobId)=>{
 
@@ -31,13 +34,33 @@ if(newChat){
 
 useEffect(()=>{
   // fetch all chats
-  const getChats=async()=>{
+  const getChats= async()=>{
     const response = await axios.get(`${CHATS_END_POINT}/fetch-chats`,{withCredentials:true})
     setChatList(response.data)
-    console.log(response)
+    console.log("Response :",response)
   }
   getChats()
+
 },[])
+
+useEffect(() => {
+  const token = Cookies.get('token');
+  console.log("token: ",token)
+  
+  const socketConnection = io('http://localhost:3000', {
+    query: { token },
+    transports: ['websocket'], // optional but recommended
+  });
+  setSocket(socketConnection);
+  socketConnection.on('connect', () => {
+    console.log('Connected to socket server:', socketConnection.id);
+  });
+  // chatList?.map((chat) => {
+  //   socketConnection.emit('joinRoom', chat.roomName);
+  //   console.log("joined room in useEffect", chat.roomName)
+  // })
+},[])
+
 
   return (
     <>
@@ -70,8 +93,9 @@ useEffect(()=>{
                 </button>
                 </div>
               }
-              {isChatOpen ? <ChattingPage currentChat={currentChat} setCurrentChat={setCurrentChat}/> :
-                <ChattingList setCurrentChat={setCurrentChat} chatList={chatList} isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen}/>}
+              {isChatOpen ? <ChattingPage currentChat={currentChat} setCurrentChat={setCurrentChat} socket={socket}/> :
+                <ChattingList setCurrentChat={setCurrentChat} chatList={chatList} isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} socket={socket}/>
+              }
             </div>
           )}
         </>,

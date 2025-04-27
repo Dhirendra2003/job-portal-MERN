@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken';
-import { saveMessage } from '../controllers/message.controller.js'
+import { saveMessage, getChatsByRoomName } from '../controllers/message.controller.js'
 
 const initializeSocket = (io) => {
 
   // Middleware for authentication 
   // io.use((socket, next) => {
   //   const token = socket.handshake.query.token;
+  //   console.log("token", token)
   //   if (!token) return next(new Error('Authentication error'));
 
   //   try {
@@ -49,12 +50,17 @@ const initializeSocket = (io) => {
       socket.to(roomName).emit('userLeft', `${socket.id} has left the room`);
     });
 
-    socket.on('messageToRoom', async ({ roomName, message }) => { // Make async if saving
+    socket.on('messageToRoom', async ({ roomName, sender, message }) => { // Make async if saving
+      if (!roomName || !message) {
+        socket.emit('error', 'Room name and message are required');
+        return;
+      }
       console.log(`Message to room ${roomName} from ${socket.id}:`, message);
-      const { sender, textmsg } = message;
-      const result = await saveMessage({ roomName, sender, textmsg });
+      const result = await saveMessage({ roomName, sender, message });
+
       if (result.status) {
-        io.to(roomName).emit('roomMessage', result.data); // Emit the saved message object to the room
+        const chats = await getChatsByRoomName(roomName);
+        io.to(roomName).emit('roomMessage', { chats: chats.data }); // Emit the saved message object to the room
       } else {
         socket.emit('error', `Failed to send message to room: ${result.message}`);
       }

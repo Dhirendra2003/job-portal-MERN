@@ -5,10 +5,9 @@ import { useEffect, useState, useRef } from "react";
 import axios from 'axios';
 import { CHATS_END_POINT } from '@/utils/constants';
 import { useSelector } from 'react-redux';
-import { io } from 'socket.io-client';
-import Cookies from 'js-cookie';
 
-const ChattingPage = ({ currentChat, setCurrentChat }) => {
+
+const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
   // const [chats, setChats] = useState([
   //   { message: "How can we help you today?", fromBot: true, timestamp: 1713945600000 },
   //   { message: "I need help with my application.", fromBot: false, timestamp: 1713945660000 },
@@ -21,18 +20,54 @@ const ChattingPage = ({ currentChat, setCurrentChat }) => {
   const textInput = useRef(null);
   const [loading, setLoading] = useState(false)
   const { newChat, user } = useSelector((store) => store.auth)
-
-  const token = Cookies.get('token');
-
-  const socket = io('http://localhost:3000', {
-    query: { token },
-    transports: ['websocket'], // optional but recommended
-  });
+  const [messages, setMessages] = useState(currentChat?.chats || [])
+  const roomName = currentChat?.roomName || newChat?.roomName;
 
   function getTime(timestring) {
     const hmTime = new Date(timestring).toLocaleTimeString();
     const time = moment(hmTime, "HH:mm:ss").format("hh:mm A");
     return time
+  }
+
+  useEffect(() => {
+    if (currentChat) {
+      setMessages(currentChat?.chats || []);
+    }
+
+    const handleRoomMessage = (data) => {
+      console.log("message received", data.chats);
+      const { chats } = data;
+      setMessages(chats);
+    };
+    socket?.emit('joinRoom', roomName);
+    
+    socket.on('roomMessage', handleRoomMessage);
+
+    socket.on('error', (errorMessage => {
+      console.error("Error from server:", errorMessage);
+    })
+    );
+
+    socket.onAny((event, ...args) => {
+      console.log(`Socket Event: ${event}`, args);
+    });
+    
+  }, [currentChat, socket]);
+  
+
+  useEffect(() => {
+    console.log("messages changed:", messages)
+  }, [messages]);
+
+  const sendChatViaSocket = async (message) => {
+    const input = textInput.current.value;
+    if (socket) {
+      socket.emit('messageToRoom', {
+        roomName: currentChat.roomName,
+        sender: user.role === "recruiter" ? "recruiter" : "applicant",
+        message: input
+      });
+    }
   }
 
   async function startChat() {
@@ -51,6 +86,7 @@ const ChattingPage = ({ currentChat, setCurrentChat }) => {
         }]
       })
     );
+    
     textInput.current.value = ""
     const newMessage = {
       createdAt: new Date().toLocaleString(),
@@ -140,7 +176,12 @@ const ChattingPage = ({ currentChat, setCurrentChat }) => {
       </div>}
       <div className="flex justify-between relative  mt-auto  p-2 gap-2">
         <input ref={textInput} type="text" className="p-2 w-full  border-2 border-neutral-200 rounded-lg" />
-        <button onClick={() => startChat()} className="bg-[#F83002] flex items-center justify-center rounded-lg w-10 h-10"
+        <button 
+        onClick={() => {
+          // startChat();
+          sendChatViaSocket();
+        }} 
+        className="bg-[#F83002] flex items-center justify-center rounded-lg w-10 h-10"
         // onClick={() => { console.log("message sent") }}
         >
           <SendHorizonal color="white" />
