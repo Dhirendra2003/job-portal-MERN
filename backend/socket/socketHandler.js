@@ -51,8 +51,8 @@ const initializeSocket = (io) => {
 
     socket.on('messageToRoom', async ({ roomName, message }) => { // Make async if saving
       console.log(`Message to room ${roomName} from ${socket.id}:`, message);
-      const { sender, message } = message;
-      const result = await saveMessage({ roomName, sender, message });
+      const { sender, textmsg } = message;
+      const result = await saveMessage({ roomName, sender, textmsg });
       if (result.status) {
         io.to(roomName).emit('roomMessage', result.data); // Emit the saved message object to the room
       } else {
