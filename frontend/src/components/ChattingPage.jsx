@@ -2,8 +2,11 @@ import { ChevronLeft, SendHorizonal, X } from 'lucide-react'
 import assistant from "../assets/FA.png"
 import moment from "moment";
 import { useEffect, useState, useRef } from "react";
+import axios from 'axios';
+import { CHATS_END_POINT } from '@/utils/constants';
+import { useSelector } from 'react-redux';
 
-const ChattingPage = ({currentChat}) => {
+const ChattingPage = ({ currentChat, setCurrentChat }) => {
   // const [chats, setChats] = useState([
   //   { message: "How can we help you today?", fromBot: true, timestamp: 1713945600000 },
   //   { message: "I need help with my application.", fromBot: false, timestamp: 1713945660000 },
@@ -13,7 +16,9 @@ const ChattingPage = ({currentChat}) => {
   //   { message: "Thanks!", fromBot: false, timestamp: 1713945900000 }
   // ]);
   const latestMessage = useRef(null);
+  const textInput = useRef(null);
   const [loading, setLoading] = useState(false)
+  const { newChat,user } = useSelector((store) => store.auth)
 
   function getTime(timestring) {
     const hmTime = new Date(timestring).toLocaleTimeString();
@@ -21,35 +26,81 @@ const ChattingPage = ({currentChat}) => {
     return time
   }
 
+  async function startChat() {
+    if (textInput.current.value === "") {
+      return
+    }
+    const input = textInput.current.value;
+    console.log(input)
+    setCurrentChat((prev) => (
+      {
+        ...(prev || {}),
+        chats: [...(prev?.chats || []), {
+          createdAt: new Date().toLocaleString(),
+          message: `${input}`,
+          sender: user.role==="recruiter"?"recruiter":"applicant",
+        }]
+      })
+    );
+    textInput.current.value = ""
+    const newMessage = {
+      createdAt: new Date().toLocaleString(),
+      message: input,
+      sender: user.role === "recruiter" ? "recruiter" : "applicant",
+    };
+
+    const updatedChat = {
+      ...(currentChat || {}),
+      chats: [...(currentChat?.chats || []), newMessage],
+    };
+
+    //creating a chat in db if not present
+    const response = await axios.post(`${CHATS_END_POINT}/create-chat`,
+      {
+        "jobId": newChat.jobId,
+        "companyId": newChat.companyId,
+        "recruiterId": newChat.recruiterId,
+        "applicantId": newChat.applicantId,
+        "chats": updatedChat.chats, // <-- updated array
+      },
+      {withCredentials:true}
+    )
+    console.log(response)
+  }
+
+
+  useEffect(() => {
+    latestMessage.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [currentChat]);
   return (
-    <div className='h-[60vh]  '>
-     
+    <div className='h-[60vh] grid  '>
+
 
       {/* Chat Messages */}
-      <div className="p-4 flex max-h-[90%] flex-col overflow-y-scroll pb-48 gap-1">
-        <>
-          {currentChat?.chats?.length > 0 ? currentChat?.chats?.map((item, index) => (
-            <div key={index}>
-              <div className="flex items-center gap-2">
-                {item.fromBot && <img src={assistant} className="w-6 h-6" alt="" />}
-                {/*can put company logo */}
-                <p
+      <div className="p-4 flex max-h-[100%] flex-col overflow-y-auto pb-48 gap-1">
 
-                  className={`${item.fromBot ? "text-left bg-purple-200" : "text-right  bg-gray-100  ml-auto pr-2"} py-1 px-3 rounded-lg my-1 max-w-[70%] break-words`}
-                  ref={index === currentChat?.chats?.length - 1 ? latestMessage : null}
-                >
-                  {item.message}
-                </p>
+        {currentChat?.chats?.length > 0 ? currentChat?.chats?.map((item, index) => (
+          <div key={index}>
+            <div className="flex items-center gap-2">
+              {item.sender==="recruiter" && <img src={assistant} className="w-6 h-6" alt="" />}
+              {/*can put company logo */}
+              <p
 
-              </div>
-              <p className={`text-xs pl-10 pr-4 ${item.fromBot ? "text-left" : "text-right"}`}>{getTime(item.createdAt)}</p>
+                className={`${item.sender==="recruiter" ? "text-left bg-purple-200" : "text-right  bg-gray-100  ml-auto pr-2"} py-1 px-3 rounded-lg my-1 max-w-[70%] break-words`}
+                ref={index === currentChat?.chats?.length - 1 ? latestMessage : null}
+              >
+                {item.message}
+              </p>
+
             </div>
-          )) :
-            <p className="text-center text-neutral-400 m-auto italic text-2xl font-semibold">
-              No Chats Present Currently !
-            </p>
-          }
-        </>
+            <p className={`text-xs pl-10 pr-4 ${item.sender==="recruiter" ? "text-left" : "text-right"}`}>{getTime(item.createdAt)}</p>
+          </div>
+        )) :
+          <p className="text-center text-neutral-400 m-auto italic text-2xl font-semibold">
+            No Chats Present Currently !
+          </p>
+        }
+
 
       </div>
 
@@ -70,13 +121,15 @@ const ChattingPage = ({currentChat}) => {
             </div>
           </div>}
 
-        <div className="flex justify-between gap-2">
-          <input type="text" className="p-2 w-full  border-2 border-neutral-200 rounded-lg" />
-          <button className="bg-[#F83002] flex items-center justify-center rounded-lg w-10 h-10" onClick={() => { console.log("message sent") }}>
-            <SendHorizonal color="white" />
-          </button>
-        </div>
       </div>}
+      <div className="flex justify-between relative  mt-auto  p-2 gap-2">
+        <input ref={textInput} type="text" className="p-2 w-full  border-2 border-neutral-200 rounded-lg" />
+        <button onClick={() => startChat()} className="bg-[#F83002] flex items-center justify-center rounded-lg w-10 h-10"
+        // onClick={() => { console.log("message sent") }}
+        >
+          <SendHorizonal color="white" />
+        </button>
+      </div>
     </div>
   )
 }

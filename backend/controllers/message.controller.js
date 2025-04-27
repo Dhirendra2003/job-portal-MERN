@@ -8,7 +8,10 @@ export const fetchMessages = async (req, res) => {
     // console.log(userId);
     // const user = await User.find({ _id: userId });
     // console.log(user);
-    const chats = await Message.find({ applicantId: userId })
+    const chats = await Message.find({
+      $or: [{ applicantId: userId }, { recruiterId: userId }],
+    })
+
       .populate("companyId jobId")
       .exec();
 
@@ -21,21 +24,38 @@ export const fetchMessages = async (req, res) => {
 
 export const createChat = async (req, res) => {
   try {
+    //check if job chat already exists:
     const { jobId, companyId, recruiterId, applicantId, chats } = req.body;
+    const oldChat = await Message.findOne({
+      jobId: jobId,
+      applicantId: applicantId,
+    });
+    console.log(oldChat);
 
     // Validate required fields
     if (!jobId || !companyId || !recruiterId || !applicantId || !chats) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    let newChat = {};
     // Create new message document
-    const newChat = await Message.create({
-      jobId,
-      companyId,
-      recruiterId,
-      applicantId,
-      chats,
-    });
+    if (!oldChat) {
+      console.log("old chat doesnt exist");
+      newChat = await Message.create({
+        jobId,
+        companyId,
+        recruiterId,
+        applicantId,
+        chats,
+      });
+    } 
+    if(oldChat){
+      oldChat.chats = chats;
+      const returned = await oldChat.save();
+      console.log(oldChat);
+      console.log(returned);
+      newChat = returned;
+    }
 
     res.status(201).json(newChat);
   } catch (error) {

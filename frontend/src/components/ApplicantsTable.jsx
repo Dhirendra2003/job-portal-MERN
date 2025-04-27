@@ -15,9 +15,24 @@ function formatDate(dateString) {
   return date.toLocaleDateString('en-GB', options); // en-GB format gives 'dd MMM yyyy'
 }
 export default function ApplicantsTable({ data }) {
+  const { user } = useSelector((store) => store.auth);
   const dispatcher = useDispatch();
-  const startNewChat = (name) => {
-    dispatcher(setNewChat({ name: name }))
+
+  const startNewChat = (applicant) => {
+    // console.log({
+    //   name: applicant.fullName,
+    //   jobId: data._id,
+    //   companyId: data.company._id,
+    //   recruiterId: user._id,
+    //   applicantId: applicant._id,
+    // })
+    dispatcher(setNewChat({
+      name: applicant.fullName,
+      jobId: data._id,
+      companyId: data.company._id,
+      recruiterId: user._id,
+      applicantId: applicant._id,
+    }))
   }
   const sendStatus = async (id, status, applicantName) => {
     try {
@@ -78,7 +93,7 @@ export default function ApplicantsTable({ data }) {
 
                         <Button onClick={() => { sendStatus(appn._id, "rejected", appn.applicant?.fullName) }} variant='ghost' className="w-[100%] m-0 p-0"><div className='w-full flex items-center gap-2 p-3 rounded-lg bg-red-300 dark:bg-red-700'><X /><p>Reject</p></div></Button>
 
-                        <Button onClick={() => { dispatcher(setChatWindow(true)); startNewChat(appn.applicant?.fullName) }} variant='ghost' className="w-[100%] m-0 p-0"><div className='w-full flex items-center gap-2 p-3 rounded-lg bg-purple-200 dark:bg-purple-700'><MessageCircle /><p>Chat</p></div></Button>
+                        <Button onClick={() => { dispatcher(setChatWindow(true)); startNewChat(appn?.applicant) }} variant='ghost' className="w-[100%] m-0 p-0"><div className='w-full flex items-center gap-2 p-3 rounded-lg bg-purple-200 dark:bg-purple-700'><MessageCircle /><p>Chat</p></div></Button>
                       </PopoverContent>
                     </Popover>
                   </TableCell>

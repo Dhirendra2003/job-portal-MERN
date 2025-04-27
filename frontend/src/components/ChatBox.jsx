@@ -57,7 +57,7 @@ useEffect(()=>{
                 <button onClick={() => setIsChatOpen(false)} className="text-white">
                   <ChevronLeft />
                 </button>
-                <h2 className="text-lg font-bold">{newChat?(newChat?.name):""}</h2>
+                <h2 className="text-lg font-bold capitalize">{newChat?(newChat?.name):currentChat?.companyId?.name}</h2>
                 <button onClick={() => dispatcher(setChatWindow(false))} className="text-white">
                   <X />
                 </button>
@@ -70,7 +70,7 @@ useEffect(()=>{
                 </button>
                 </div>
               }
-              {isChatOpen ? <ChattingPage currentChat={currentChat}/> :
+              {isChatOpen ? <ChattingPage currentChat={currentChat} setCurrentChat={setCurrentChat}/> :
                 <ChattingList setCurrentChat={setCurrentChat} chatList={chatList} isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen}/>}
             </div>
           )}
