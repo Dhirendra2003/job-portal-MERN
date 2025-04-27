@@ -21,16 +21,18 @@ const initializeSocket = (io) => {
   io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
-    // Example: Listen for chat messages
+    // Handle disconnection
+    socket.on('disconnect', () => {
+      console.log('User disconnected:', socket.id);
+    });
+    
+    // Example: Listen for chat messages 
+    // global chat
     socket.on('sendMessage', async (messageData) => {
       console.log('Message received:', messageData);
       io.emit('receiveMessage', messageData); // Emit the saved message object
     });
 
-    // Handle disconnection
-    socket.on('disconnect', () => {
-      console.log('User disconnected:', socket.id);
-    });
 
     //Join room 
     socket.on('joinRoom', (roomName) => {
@@ -49,14 +51,13 @@ const initializeSocket = (io) => {
 
     socket.on('messageToRoom', async ({ roomName, message }) => { // Make async if saving
       console.log(`Message to room ${roomName} from ${socket.id}:`, message);
-      // TODO: Potentially save the room message here as well using saveMessage
-      // const result = await saveMessage({ sender: socket.id, receiver: roomName, message: message.text }); // Adjust receiver/room logic
-      // if (result.status) {
-      // Send message to everyone in the room including the sender
-      io.to(roomName).emit('roomMessage', { sender: socket.id, message: message.text });
-      // } else {
-      //    socket.emit('error', `Failed to send message to room: ${result.message}`);
-      // }
+      const { sender, message } = message;
+      const result = await saveMessage({ roomName, sender, message });
+      if (result.status) {
+        io.to(roomName).emit('roomMessage', result.data); // Emit the saved message object to the room
+      } else {
+        socket.emit('error', `Failed to send message to room: ${result.message}`);
+      }
     });
 
   });
