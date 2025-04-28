@@ -29,11 +29,11 @@ export default function Browse() {
     }
   }, [searchstring])
 
-  useEffect(() => {
-    if (!user) {
-      toast.warning('Login First to use This Application')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!user) {
+  //     toast.warning('Login First to use This Application')
+  //   }
+  // }, [])
   return (
     <div >
       <Navbar />

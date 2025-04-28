@@ -6,7 +6,7 @@ function Footer() {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className='gap-4 flex-col flex'>
         <h1 className="text-lg font-bold">
-            Job<span className="text-[#F83002]">Portal</span>
+            Work<span className="text-[#F83002]">Nest</span>
           </h1>
           <p className="w-[70%] ">Your gateway to finding the perfect job.</p>
         </div>
@@ -30,12 +30,12 @@ function Footer() {
         </div>
         <div className='gap-4 flex-col flex'>
           <h4 className="text-lg font-bold mb-4">Contact Information</h4>
-          <a href="mailto:info@jobportal.com">Email: info@jobportal.com</a>
+          <a href="mailto:info@worknest.com">Email: info@worknest.com</a>
           <a href="tel:+1234567890">Phone: +123 456 7890</a>
         </div>
       </div>
       <div className="text-center mt-8">
-        <p>© {new Date().getFullYear()} JobPortal. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} WorkNest. All rights reserved.</p>
       </div>
     </footer>
   );

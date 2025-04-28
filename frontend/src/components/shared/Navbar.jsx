@@ -51,7 +51,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between mx-auto max-w-5xl px-2 shadow-sm h-16">
         <div onClick={() => nav("/")} className="cursor-pointer">
           <h1 className="text-2xl font-bold">
-            Job<span className="text-[#F83002]">Portal</span>
+            Work<span className="text-[#F83002]">Nest</span>
           </h1>
         </div>
 
