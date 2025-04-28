@@ -4,7 +4,7 @@ import { Badge } from './ui/badge'
 
 function LatestJobCard({job}) {
   return (
-    <div className=' p-5 rounded-lg shadow-lg bg-white border-2 border-gray-100 dark:bg-neutral-900 dark:border-neutral-600'>
+    <div className=' p-5 rounded-lg shadow-lg bg-white border-2 border-gray-100 dark:border-gray-800 dark:bg-neutral-900 dark:border-neutral-600'>
       <div>
     {/* <h1 className='font-medium text-lg'>{jobId}</h1> */}
     <h1 className='font-medium text-lg'>{job.company.name}</h1>

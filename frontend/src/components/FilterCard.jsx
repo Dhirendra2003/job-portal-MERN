@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilterJobs } from "../../redux/jobSlice";
 import { Button } from "./ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 const filterdata = [
   {
@@ -51,6 +52,7 @@ function FilterCard() {
     industry: "",
     salary: "",
   });
+  const [openFilter, setOpenFilter] = useState({}); // Track open/close state
   const { filterJobs } = useSelector((store) => store.job);
   const dispatch = useDispatch();
 
@@ -58,13 +60,19 @@ function FilterCard() {
     dispatch(setFilterJobs(filter));
   }, [filter]);
 
-  // Handle clearing of filter
   const handleClearFilter = () => {
     setFilter({
       location: "",
       industry: "",
       salary: "",
     });
+  };
+
+  const toggleFilter = (filterType) => {
+    setOpenFilter((prev) => ({
+      ...prev,
+      [filterType]: !prev[filterType],
+    }));
   };
 
   return (
@@ -76,34 +84,40 @@ function FilterCard() {
       </Button>
 
       {filterdata.map((item, index) => {
+        const isOpen = openFilter[item.filterType];
         return (
           <div key={index} className="mx-4 mt-4">
-            <h1 className="font-semibold text-lg my-2 capitalize">
-              {item.filterType}
-            </h1>
-            <RadioGroup
-              key={index}
-              value={filter[item.filterType]} // Control the selected value
-              onValueChange={(value) => {
-                setFilter((prevFilter) => ({
-                  ...prevFilter,
-                  [item.filterType]: value,
-                }));
-              }}
+            <div
+              className="flex justify-between items-center cursor-pointer"
+              onClick={() => toggleFilter(item.filterType)}
             >
-              {item.array.map((value, ind) => {
-                return (
+              <h1 className="font-semibold text-lg my-2 capitalize">
+                {item.filterType}
+              </h1>
+              {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </div>
+
+            {isOpen && (
+              <RadioGroup
+                value={filter[item.filterType]} // Control the selected value
+                onValueChange={(value) => {
+                  setFilter((prevFilter) => ({
+                    ...prevFilter,
+                    [item.filterType]: value,
+                  }));
+                }}
+              >
+                {item.array.map((value, ind) => (
                   <div
                     key={ind}
                     className="flex items-center space-x-2 text-wrap mt-1"
                   >
                     <RadioGroupItem value={value} id={`r1-${index}-${ind}`} />
                     <Label htmlFor={`r1-${index}-${ind}`}>{value}</Label>
-                    <hr />
                   </div>
-                );
-              })}
-            </RadioGroup>
+                ))}
+              </RadioGroup>
+            )}
             <hr className="mt-4" />
           </div>
         );

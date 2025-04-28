@@ -19,7 +19,7 @@ const ChattingList = ({isChatOpen,setIsChatOpen,chatList,setCurrentChat}) => {
     <div className="pt-3 flex flex-col h-[60vh]  overflow-auto ">
       {chatList?.length>0 && chatList.map((item,index)=>{
         return (
-          <div onClick={()=>{setIsChatOpen(true);setCurrentChat(item)}} key={index} className={`grid grid-cols-3 p-4 h-20 border-neutral-300 border-b-[1px] bg-${item?.unreadmsg? "purple-100":'white'} items-center `}>
+          <div onClick={()=>{setIsChatOpen(true);setCurrentChat(item)}} key={index} className={`grid grid-cols-3 p-4 h-20 border-neutral-300 border-b-[1px] bg-${item?.unreadmsg? "purple-100":'white'} dark:bg-neutral-950 items-center `}>
             <img src={item?.companyId?.logo} alt="" className='m-auto shadow-md rounded-lg w-12 h-12 ' />
             <h3 className='col-span-2 pl-3 text-xl flex'>{item?.companyId?.name}
               {/* {item.unreadmsg &&<span className='text-right ml-auto text-red-500 text-3xl'>•</span>} */}

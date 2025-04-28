@@ -51,7 +51,7 @@ export default function ApplicantsTable({ data }) {
     }
   }
   return (
-    <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 rounded-2xl p-10'>
+    <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-10'>
       <h1 className='text-center text-blue-800 font-bold text-2xl mb-8'>Applications</h1>
       {data ? <Table>
 
@@ -70,7 +70,6 @@ export default function ApplicantsTable({ data }) {
 
           {data?.applications?.map((appn, ind) => {
             return (
-              <>
                 <TableRow key={ind} className="  text-center text-lg ">
                   <TableCell>{appn.applicant?.fullName}</TableCell>
                   <TableCell>{appn.applicant?.email}</TableCell>
@@ -99,7 +98,7 @@ export default function ApplicantsTable({ data }) {
                   </TableCell>
                 </TableRow>
 
-              </>)
+              )
           })}
 
         </TableBody>

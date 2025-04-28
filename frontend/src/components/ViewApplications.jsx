@@ -44,7 +44,7 @@ export default function ViewApplications() {
   return (
     <div>
       <Navbar/>
-      <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 rounded-2xl p-10'>
+      <div className='max-w-7xl mx-auto my-10 border-2 border-gray-100 dark:border-gray-700 rounded-2xl p-10'>
       <div className=' md:flex  gap-5 '>
           <Button variant='ghost' className='p-1' size='xl'>
             <Avatar >

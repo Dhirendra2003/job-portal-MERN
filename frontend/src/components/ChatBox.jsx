@@ -32,13 +32,13 @@ if(newChat){
 }
 },[newChat])
 
+const getChats= async()=>{
+  const response = await axios.get(`${CHATS_END_POINT}/fetch-chats`,{withCredentials:true})
+  setChatList(response.data)
+  console.log("Response :",response)
+}
 useEffect(()=>{
   // fetch all chats
-  const getChats= async()=>{
-    const response = await axios.get(`${CHATS_END_POINT}/fetch-chats`,{withCredentials:true})
-    setChatList(response.data)
-    console.log("Response :",response)
-  }
   getChats()
 
 },[])
@@ -55,9 +55,10 @@ useEffect(() => {
   socketConnection.on('connect', () => {
     console.log('Connected to socket server:', socketConnection.id);
   });
-  // chatList?.map((chat) => {
-  //   socketConnection.emit('joinRoom', chat.roomName);
-  //   console.log("joined room in useEffect", chat.roomName)
+  console.log("chatlist: ",chatList)
+  // chatList?.map(chat => {
+  //   console.log("chat from map", chat?.roomName)
+  //   socketConnection.emit('joinRoom', chat?.roomName);
   // })
 },[])
 
@@ -69,13 +70,13 @@ useEffect(() => {
           {/* Floating Chat Button */}
           <button
             onClick={() => dispatcher(setChatWindow(true))}
-            className=" bg-[#6A38C2] fixed z-50 bottom-5 right-5 bg- text-white p-3 rounded-full hover:bg-[#502897] transition"
+            className=" bg-[#6A38C2] fixed z-50 bottom-5 right-5  text-white p-3 rounded-full hover:bg-[#502897] transition"
           >
             <MessageCircle size={24} color="white" />
           </button>
 
           {chatWindow && (
-            <div className="fixed bottom-20 right-5 w-96 bg-white drop-shadow-xl border-[2px] border-neutral-300 rounded-lg overflow-hidden z-50">
+            <div className="fixed bottom-20 right-5 w-96 bg-white dark:bg-neutral-900 drop-shadow-xl border-[2px] border-neutral-300  rounded-lg overflow-hidden z-50">
               {isChatOpen ? <div className="bg-[#6A38C2] text-white p-4 flex justify-between">
                 <button onClick={() => setIsChatOpen(false)} className="text-white">
                   <ChevronLeft />
@@ -93,7 +94,7 @@ useEffect(() => {
                 </button>
                 </div>
               }
-              {isChatOpen ? <ChattingPage currentChat={currentChat} setCurrentChat={setCurrentChat} socket={socket}/> :
+              {isChatOpen ? <ChattingPage getChats={getChats} currentChat={currentChat} setCurrentChat={setCurrentChat} socket={socket}/> :
                 <ChattingList setCurrentChat={setCurrentChat} chatList={chatList} isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} socket={socket}/>
               }
             </div>
