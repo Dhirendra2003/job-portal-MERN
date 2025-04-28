@@ -122,7 +122,7 @@ function Job({ data }) {
       </div>
       <div className='flex gap-4 flex-wrap my-4'>
         <Button
-          className='bg-purple-700 hover:bg-purple-900 dark:text-white'
+          className='bg-[#2C89FD] hover:bg-[#2c59fd] dark:text-white'
           onClick={() => {
             navigate(`/jobs/description/${data._id}`);
           }}

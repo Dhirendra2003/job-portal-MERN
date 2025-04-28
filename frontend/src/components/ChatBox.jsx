@@ -70,14 +70,14 @@ useEffect(() => {
           {/* Floating Chat Button */}
           <button
             onClick={() => dispatcher(setChatWindow(true))}
-            className=" bg-[#6A38C2] fixed z-50 bottom-5 right-5  text-white p-3 rounded-full hover:bg-[#502897] transition"
+            className=" bg-[] fixed z-50 bottom-5 right-5  text-white p-3 rounded-full hover:bg-[#502897] transition"
           >
             <MessageCircle size={24} color="white" />
           </button>
 
           {chatWindow && (
             <div className="fixed bottom-20 right-5 w-96 bg-white dark:bg-neutral-900 drop-shadow-xl border-[2px] border-neutral-300  rounded-lg overflow-hidden z-50">
-              {isChatOpen ? <div className="bg-[#6A38C2] text-white p-4 flex justify-between">
+              {isChatOpen ? <div className="bg-[#2C89FD] text-white p-4 flex justify-between">
                 <button onClick={() => setIsChatOpen(false)} className="text-white">
                   <ChevronLeft />
                 </button>
@@ -87,7 +87,7 @@ useEffect(() => {
                 </button>
               </div>
                 :
-                <div className="bg-[#6A38C2] text-white p-4 flex justify-between">
+                <div className="bg-[#2C89FD] text-white p-4 flex justify-between">
                   <h2 className="text-lg font-bold">Chats </h2>
                   <button onClick={() => dispatcher(setChatWindow(false))} className="text-white">
                   <X />

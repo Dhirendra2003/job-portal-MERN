@@ -5,9 +5,14 @@ function Footer() {
     <footer className="bg-black text-white py-8 dark:bg-neutral-900">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className='gap-4 flex-col flex'>
-        <h1 className="text-lg font-bold">
-            Work<span className="text-[#F83002]">Nest</span>
-          </h1>
+          <div className="flex items-center gap-2 ">
+            <div className="flex items-center justify-center w-[40px] h-[40px]">
+              <img src="/hire_loop.png" alt="" className="object-contain" />
+            </div>
+            <h1 className="text-lg font-bold ">
+              Hire<span className="text-[#2C89FD]">Loop</span>
+            </h1>
+          </div>
           <p className="w-[70%] ">Your gateway to finding the perfect job.</p>
         </div>
         <div className='gap-4 flex-col flex'>
@@ -30,7 +35,7 @@ function Footer() {
         </div>
         <div className='gap-4 flex-col flex'>
           <h4 className="text-lg font-bold mb-4">Contact Information</h4>
-          <a href="mailto:info@worknest.com">Email: info@worknest.com</a>
+          <a href="mailto:info@hireloop.com">Email: info@hireloop.com</a>
           <a href="tel:+1234567890">Phone: +123 456 7890</a>
         </div>
       </div>

@@ -49,9 +49,12 @@ export default function Navbar() {
   return (
     <div className="bg-white sticky top-0 z-50 dark:bg-neutral-900">
       <div className="flex items-center justify-between mx-auto max-w-5xl px-2 shadow-sm h-16">
-        <div onClick={() => nav("/")} className="cursor-pointer">
+        <div onClick={() => nav("/")} className="cursor-pointer flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center w-[50px] h-[50px]">
+            <img src="/hire_loop.png" alt="" className="object-contain" />
+          </div>
           <h1 className="text-2xl font-bold">
-            Work<span className="text-[#F83002]">Nest</span>
+            Hire<span className="text-[#2C89FD]">Loop</span>
           </h1>
         </div>
 
@@ -122,7 +125,7 @@ export default function Navbar() {
               <Button variant="outline">
                 <Link to={"/login"}>Login </Link>
               </Button>
-              <Button className="bg-[#6A38C2] hover:bg-[#442181]">
+              <Button className="bg-[#2C89FD] hover:bg-[#442181]">
                 <Link to={"/signup"}> Signup </Link>
               </Button>
             </div>
