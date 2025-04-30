@@ -11,17 +11,17 @@ import { toast } from "sonner"
 
 export default function Home() {
   useGetAllJobs();
-  // const { user } = useSelector(store => store.auth);
+  const { user } = useSelector(store => store.auth);
   const nav = useNavigate();
 
-  // useEffect(() => {
-  //   if (user?.role === "recruiter") {
-  //     nav('/admin/companies');
-  //   }
-  //   if (!user) {
-  //     toast.warning('Login First to use This Application')
-  //   }
-  // }, [user])
+  useEffect(() => {
+    if (user?.role === "recruiter") {
+      nav('/admin/companies');
+    }
+    // if (!user) {
+    //   toast.warning('Login First to use This Application')
+    // }
+  }, [user])
   return (
     <div>
       <Navbar />

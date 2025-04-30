@@ -7,6 +7,7 @@ const authSlice=createSlice({
     chatWindow:false,
     user:null,
     newChat:null,
+    isWSConneted:false,
   },
   reducers:{
     //actions
@@ -21,8 +22,11 @@ const authSlice=createSlice({
     },
     setNewChat:(state,action)=>{
       state.newChat=action.payload
+    },
+    setIsWSConneted:(state,action)=>{
+      state.isWSConneted=action.payload
     }
   }
 })
-export const  {setLoading,setUser,setChatWindow,setNewChat}=authSlice.actions
+export const  {setLoading,setUser,setChatWindow,setNewChat,setIsWSConneted}=authSlice.actions
 export default authSlice.reducer
