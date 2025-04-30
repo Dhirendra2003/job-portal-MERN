@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { ChevronLeft, MessageCircle, X } from "lucide-react";
 // import axios from 'axios'
 import { setChatWindow, setIsWSConneted } from "../../redux/authSlice.js";
-import { CHATS_END_POINT } from "@/utils/constants.js";
+import { BACKEND_POINT, CHATS_END_POINT } from "@/utils/constants.js";
 
 import ChattingPage from "./ChattingPage";
 import ChattingList from "./ChattingList";
@@ -48,7 +48,7 @@ export default function Chatbot() {
     const token = Cookies.get('token');
     console.log("token: ", token)
 
-    const socketConnection = io('http://localhost:3000', {
+    const socketConnection = io(`${BACKEND_POINT}`, {
       query: { token },
       transports: ['websocket'], // optional but recommended
     });
