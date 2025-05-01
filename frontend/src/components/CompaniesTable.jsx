@@ -58,7 +58,7 @@ export default function CompaniesTable(props) {
   }, [])
   return (
     <>
-      {filterData.length>0 ? <Table className='my-5'>
+      {filterData?.length>0 ? <Table className='my-5'>
         <TableCaption>A list of your Companies.</TableCaption>
         <TableHeader className='my-10'>
           <TableRow >
