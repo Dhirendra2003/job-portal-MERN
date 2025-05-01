@@ -7,7 +7,7 @@ import { CHATS_END_POINT } from '@/utils/constants';
 import { useSelector } from 'react-redux';
 
 
-const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
+const ChattingPage = ({ currentChat, setCurrentChat, socket ,getChats}) => {
   // const [chats, setChats] = useState([
   //   { message: "How can we help you today?", fromBot: true, timestamp: 1713945600000 },
   //   { message: "I need help with my application.", fromBot: false, timestamp: 1713945660000 },
@@ -18,9 +18,9 @@ const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
   // ]);
   const latestMessage = useRef(null);
   const textInput = useRef(null);
-  const { newChat, user } = useSelector((store) => store.auth)
+  const { newChat, user, isWSConneted } = useSelector((store) => store.auth);
   const [messages, setMessages] = useState(currentChat?.chats || [])
-  const roomName = currentChat?.roomName || newChat?.roomName;
+  const roomName = currentChat?.roomName || newChat?.roomName || "";
 
   function getTime(timestring) {
     const hmTime = new Date(timestring).toLocaleTimeString();
@@ -29,38 +29,44 @@ const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
   }
 
   useEffect(() => {
-    if (currentChat) {
-      setMessages(currentChat?.chats || []);
+    try {
+      if (currentChat) {
+        setMessages(currentChat?.chats || []);
+      }
+
+      const handleRoomMessage = (data) => {
+        console.log("message received", data.chats);
+        const { chats } = data;
+        setMessages(chats);
+        //updating displayed messages
+        setCurrentChat((prev) => (
+          {
+            ...(prev || {}),
+            chats: chats
+          })
+        );
+      };
+      socket?.emit('joinRoom', roomName);
+
+      socket.on('roomMessage', handleRoomMessage);
+
+      textInput.current.value = ""
+      socket.on('error', (errorMessage => {
+        console.error("Error from server:", errorMessage);
+      })
+      );
+
+      socket.onAny((event, ...args) => {
+        console.log(`Socket Event: ${event}`, args);
+        // getChats();
+      });
+
+    } catch (error) {
+      console.log(error)
     }
 
-    const handleRoomMessage = (data) => {
-      console.log("message received", data.chats);
-      const { chats } = data;
-      setMessages(chats);
-      //updating displayed messages
-      setCurrentChat((prev) => (
-        {
-          ...(prev || {}),
-          chats: chats
-        })
-      );
-    };
-    socket?.emit('joinRoom', roomName);
-    
-    socket.on('roomMessage', handleRoomMessage);
-
-    textInput.current.value = ""
-    socket.on('error', (errorMessage => {
-      console.error("Error from server:", errorMessage);
-    })
-    );
-
-    socket.onAny((event, ...args) => {
-      console.log(`Socket Event: ${event}`, args);
-    });
-    
   }, [currentChat, socket]);
-  
+
 
   useEffect(() => {
     console.log("messages changed:", messages)
@@ -70,8 +76,8 @@ const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
     const input = textInput.current.value;
     if (socket) {
       socket.emit('messageToRoom', {
-        roomName: currentChat.roomName,
-        sender: user.role,
+        roomName: currentChat?.roomName,
+        sender: user.role === "recruiter" ? "recruiter" : "student",
         message: input
       });
     }
@@ -89,16 +95,16 @@ const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
         chats: [...(prev?.chats || []), {
           createdAt: new Date().toLocaleString(),
           message: `${input}`,
-          sender: user.role,
+          sender: user.role === "recruiter" ? "recruiter" : "student",
         }]
       })
     );
-    
+
     textInput.current.value = ""
     const newMessage = {
       createdAt: new Date().toLocaleString(),
       message: input,
-      sender: user.role ,
+      sender: user.role === "recruiter" ? "recruiter" : "student",
     };
 
     const updatedChat = {
@@ -110,19 +116,19 @@ const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
     console.log(currentChat)
 
     //new variables
-    const jobIDcheck= newChat?.jobId? newChat.jobId :currentChat?.jobId?._id;
+    const jobIDcheck = newChat?.jobId ? newChat.jobId : currentChat?.jobId?._id;
     // const jobIDcheck= newChat?.jobId? newChat.jobId :currentChat?.jobId?._id;
     console.log(jobIDcheck)
     //creating a chat in db if not present
     const response = await axios.post(`${CHATS_END_POINT}/create-chat`,
       {
-        "jobId":  `${jobIDcheck}` ,
+        "jobId": `${jobIDcheck}`,
         "companyId": newChat?.companyId || "",
         "recruiterId": newChat?.recruiterId || "",
         "applicantId": newChat?.applicantId || user?._id,
         "chats": updatedChat.chats, // <-- updated array
       },
-      {withCredentials:true}
+      { withCredentials: true }
     )
     console.log(response)
   }
@@ -141,18 +147,18 @@ const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
         {currentChat?.chats?.length > 0 ? currentChat?.chats?.map((item, index) => (
           <div key={index}>
             <div className="flex items-center gap-2">
-              {item.sender===user?.role ?'':<img src={assistant} className="w-6 h-6" alt="" />}
+              {item.sender !== user.role ? <img src={assistant} className="w-6 h-6" alt="" /> : ''}
               {/*can put company logo */}
               <p
 
-                className={`${item.sender===user?.role ? "text-right dark:bg-neutral-700  bg-gray-100  ml-auto pr-2" :"text-left bg-purple-200 dark:bg-purple-900"} py-1 px-3 rounded-lg my-1 max-w-[70%] break-words`}
+                className={`${item.sender!== user.role  ? "text-left bg-purple-200 dark:bg-purple-900" : "text-right dark:bg-neutral-700  bg-gray-100  ml-auto pr-2"} py-1 px-3 rounded-lg my-1 max-w-[70%] break-words`}
                 ref={index === currentChat?.chats?.length - 1 ? latestMessage : null}
               >
                 {item.message}
               </p>
 
             </div>
-            <p className={`text-xs pl-10 pr-4 ${item.sender===user?.role ?"text-right":"text-left" }`}>{getTime(item.createdAt)}</p>
+            <p className={`text-xs pl-10 pr-4 ${item.sender !== user.role  ? "text-left" : "text-right"}`}>{getTime(item.createdAt)}</p>
           </div>
         )) :
           <p className="text-center text-neutral-400 m-auto italic text-2xl font-semibold">
@@ -163,15 +169,16 @@ const ChattingPage = ({ currentChat, setCurrentChat, socket }) => {
 
       </div>
 
-     
+
       <div className="flex justify-between relative  mt-auto  p-2 gap-2">
         <input ref={textInput} type="text" className="p-2 w-full dark:bg-neutral-700  border-2 border-neutral-200 rounded-lg" />
-        <button 
-        onClick={() => {
-          // startChat();
-          sendChatViaSocket();
-        }} 
-        className="bg-[#F83002] flex items-center justify-center rounded-lg w-10 h-10"
+        <button
+          onClick={() => {
+            if (isWSConneted) {
+              sendChatViaSocket();
+            } else { startChat(); }
+          }}
+          className="bg-[#F83002] flex items-center justify-center rounded-lg w-10 h-10"
         // onClick={() => { console.log("message sent") }}
         >
           <SendHorizonal color="white" />

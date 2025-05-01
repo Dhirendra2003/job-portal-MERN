@@ -83,7 +83,7 @@ export const login = async (req, resp) => {
       userId: user._id,
     };
     const token = await jwt.sign(tokenData, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+      expiresIn: "7d",
     });
     user = {
       _id: user._id,
@@ -101,7 +101,7 @@ export const login = async (req, resp) => {
         httpOnly: true,
         secure: true, // Only send cookie over HTTPS
         sameSite: "None", // Allows cross-origin requests
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         httpsOnly: true,
       })
       .json({

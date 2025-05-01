@@ -29,7 +29,7 @@ const MessageSchema = new mongoose.Schema({
     chats : [{
         sender: {
             type: String,
-            enum: ["applicant", "recruiter"],
+            enum: ["student", "recruiter"],
             required: true
         },
         message: {
